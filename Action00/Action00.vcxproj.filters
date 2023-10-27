@@ -1,0 +1,525 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\00_Management">
+      <UniqueIdentifier>{bea29df8-8d48-46ea-9299-48b637be8224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_Object">
+      <UniqueIdentifier>{96be1b76-8a39-46a3-bbd2-d3b109110555}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_2D">
+      <UniqueIdentifier>{a31f463b-c389-4909-a70c-9185600eeae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_3D">
+      <UniqueIdentifier>{20ca96d0-bcc3-410d-89c9-e0bd02a6c14f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\04_Billboard">
+      <UniqueIdentifier>{144bbad1-5f52-4d80-b3f2-3fee5e35f71e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\00_Management">
+      <UniqueIdentifier>{f7abeb41-5275-4f2a-8b38-4af5d98976dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_Object">
+      <UniqueIdentifier>{fb182a58-9410-481f-b7f0-60c83a049d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_2D">
+      <UniqueIdentifier>{5b26853a-28e9-41d8-a72e-7836bf970e51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_3D">
+      <UniqueIdentifier>{f7e95e09-7e42-4890-a0d7-aa5daade40c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\05_Decoration">
+      <UniqueIdentifier>{86ba792a-daca-4641-b51b-947904a84e2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\99_System">
+      <UniqueIdentifier>{29391f18-2059-4c86-a239-56cd882db077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\04_Billboard">
+      <UniqueIdentifier>{64a57e42-bf41-49b2-b66b-c229c8825322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\05_Decoration">
+      <UniqueIdentifier>{b3897b89-bcf4-422b-8b11-bd3f82d9a1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\99_System">
+      <UniqueIdentifier>{f69b5fc5-1ba5-48a6-9577-ceec0f89ea57}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="game.cpp">
+      <Filter>ソース ファイル\00_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="manager.cpp">
+      <Filter>ソース ファイル\00_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Pause.cpp">
+      <Filter>ソース ファイル\00_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>ソース ファイル\00_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>ソース ファイル\00_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>ソース ファイル\00_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Xmodel.cpp">
+      <Filter>ソース ファイル\00_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>ソース ファイル\00_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="object.cpp">
+      <Filter>ソース ファイル\01_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="object2D.cpp">
+      <Filter>ソース ファイル\01_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="objectBillboard.cpp">
+      <Filter>ソース ファイル\01_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="objectX.cpp">
+      <Filter>ソース ファイル\01_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="objectXtex.cpp">
+      <Filter>ソース ファイル\01_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ForeGround2D.cpp">
+      <Filter>ソース ファイル\02_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Gauge.cpp">
+      <Filter>ソース ファイル\02_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelUP.cpp">
+      <Filter>ソース ファイル\02_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelUPUI.cpp">
+      <Filter>ソース ファイル\02_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeGauge.cpp">
+      <Filter>ソース ファイル\02_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="number.cpp">
+      <Filter>ソース ファイル\02_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking.cpp">
+      <Filter>ソース ファイル\02_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ソース ファイル\02_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="TutorialUI.cpp">
+      <Filter>ソース ファイル\02_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Break.cpp">
+      <Filter>ソース ファイル\03_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="break_block3D.cpp">
+      <Filter>ソース ファイル\03_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakPiece.cpp">
+      <Filter>ソース ファイル\03_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>ソース ファイル\03_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="EditBlock3D.cpp">
+      <Filter>ソース ファイル\03_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>ソース ファイル\03_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>ソース ファイル\03_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="motion.cpp">
+      <Filter>ソース ファイル\03_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="playerlevel.cpp">
+      <Filter>ソース ファイル\03_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="SideBlock3D.cpp">
+      <Filter>ソース ファイル\03_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleUI.cpp">
+      <Filter>ソース ファイル\03_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="break_blockBillboard.cpp">
+      <Filter>ソース ファイル\04_Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet3D.cpp">
+      <Filter>ソース ファイル\04_Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="combo.cpp">
+      <Filter>ソース ファイル\04_Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="comboUI.cpp">
+      <Filter>ソース ファイル\04_Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugNumber3D.cpp">
+      <Filter>ソース ファイル\04_Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBullet3D.cpp">
+      <Filter>ソース ファイル\04_Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="FallEffect.cpp">
+      <Filter>ソース ファイル\04_Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="GaugeBillboard.cpp">
+      <Filter>ソース ファイル\04_Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeGaugeBillboard.cpp">
+      <Filter>ソース ファイル\04_Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionParticle.cpp">
+      <Filter>ソース ファイル\05_Decoration</Filter>
+    </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>ソース ファイル\05_Decoration</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>ソース ファイル\05_Decoration</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>ソース ファイル\05_Decoration</Filter>
+    </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>ソース ファイル\05_Decoration</Filter>
+    </ClCompile>
+    <ClCompile Include="debugproc.cpp">
+      <Filter>ソース ファイル\99_System</Filter>
+    </ClCompile>
+    <ClCompile Include="Edit.cpp">
+      <Filter>ソース ファイル\99_System</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル\99_System</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\99_System</Filter>
+    </ClCompile>
+    <ClCompile Include="map2D.cpp">
+      <Filter>ソース ファイル\99_System</Filter>
+    </ClCompile>
+    <ClCompile Include="precompile.cpp">
+      <Filter>ソース ファイル\99_System</Filter>
+    </ClCompile>
+    <ClCompile Include="Sample.cpp">
+      <Filter>ソース ファイル\99_System</Filter>
+    </ClCompile>
+    <ClCompile Include="WallJump.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="WallMove.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="WallAttackSide.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="WallAttackDown.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MapBlock.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MapNeedleUD.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MapNeedleLR.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MapDoor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MapSwitch.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectMovePolygon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EMPManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MapPitFloor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MapCannon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CannonBullet.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MapNeedle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MapCheckPoint.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="bosslevel.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletTypeUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy3D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelPoint3D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="player3D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="time.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game.h">
+      <Filter>ヘッダー ファイル\00_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Break.h">
+      <Filter>ヘッダー ファイル\03_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="break_block3D.h">
+      <Filter>ヘッダー ファイル\03_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="break_blockBillboard.h">
+      <Filter>ヘッダー ファイル\04_Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakPiece.h">
+      <Filter>ヘッダー ファイル\03_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet3D.h">
+      <Filter>ヘッダー ファイル\04_Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>ヘッダー ファイル\03_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="combo.h">
+      <Filter>ヘッダー ファイル\04_Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="comboUI.h">
+      <Filter>ヘッダー ファイル\04_Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugNumber3D.h">
+      <Filter>ヘッダー ファイル\04_Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="debugproc.h">
+      <Filter>ヘッダー ファイル\99_System</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionParticle.h">
+      <Filter>ヘッダー ファイル\05_Decoration</Filter>
+    </ClInclude>
+    <ClInclude Include="Edit.h">
+      <Filter>ヘッダー ファイル\99_System</Filter>
+    </ClInclude>
+    <ClInclude Include="EditBlock3D.h">
+      <Filter>ヘッダー ファイル\03_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
+      <Filter>ヘッダー ファイル\05_Decoration</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>ヘッダー ファイル\99_System</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>ヘッダー ファイル\99_System</Filter>
+    </ClInclude>
+    <ClInclude Include="map2D.h">
+      <Filter>ヘッダー ファイル\99_System</Filter>
+    </ClInclude>
+    <ClInclude Include="precompile.h">
+      <Filter>ヘッダー ファイル\99_System</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBullet3D.h">
+      <Filter>ヘッダー ファイル\04_Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>ヘッダー ファイル\05_Decoration</Filter>
+    </ClInclude>
+    <ClInclude Include="FallEffect.h">
+      <Filter>ヘッダー ファイル\04_Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="ForeGround2D.h">
+      <Filter>ヘッダー ファイル\02_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="manager.h">
+      <Filter>ヘッダー ファイル\00_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Pause.h">
+      <Filter>ヘッダー ファイル\00_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>ヘッダー ファイル\00_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>ヘッダー ファイル\00_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ヘッダー ファイル\00_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Xmodel.h">
+      <Filter>ヘッダー ファイル\00_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialUI.h">
+      <Filter>ヘッダー ファイル\02_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ヘッダー ファイル\02_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking.h">
+      <Filter>ヘッダー ファイル\02_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="number.h">
+      <Filter>ヘッダー ファイル\02_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeGauge.h">
+      <Filter>ヘッダー ファイル\02_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelUPUI.h">
+      <Filter>ヘッダー ファイル\02_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelUP.h">
+      <Filter>ヘッダー ファイル\02_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Gauge.h">
+      <Filter>ヘッダー ファイル\02_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>ヘッダー ファイル\00_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="object.h">
+      <Filter>ヘッダー ファイル\01_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="object2D.h">
+      <Filter>ヘッダー ファイル\01_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="objectBillboard.h">
+      <Filter>ヘッダー ファイル\01_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="objectX.h">
+      <Filter>ヘッダー ファイル\01_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="objectXtex.h">
+      <Filter>ヘッダー ファイル\01_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GaugeBillboard.h">
+      <Filter>ヘッダー ファイル\04_Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeGaugeBillboard.h">
+      <Filter>ヘッダー ファイル\04_Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>ヘッダー ファイル\03_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>ヘッダー ファイル\03_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="motion.h">
+      <Filter>ヘッダー ファイル\03_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>ヘッダー ファイル\05_Decoration</Filter>
+    </ClInclude>
+    <ClInclude Include="playerlevel.h">
+      <Filter>ヘッダー ファイル\03_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="SideBlock3D.h">
+      <Filter>ヘッダー ファイル\03_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleUI.h">
+      <Filter>ヘッダー ファイル\03_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>ヘッダー ファイル\05_Decoration</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="WallJump.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="WallMove.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="WallAttackSide.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="WallAttackDown.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MapBlock.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MapNeedleUD.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MapNeedleLR.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MapDoor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MapSwitch.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectMovePolygon.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EMPManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MapPitFloor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MapCannon.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CannonBullet.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MapNeedle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MapCheckPoint.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="bosslevel.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletTypeUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy3D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelPoint3D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="player3D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="time.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
