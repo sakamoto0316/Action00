@@ -3,8 +3,8 @@
 CSound::SOUNDINFO CSound::m_aSoundInfo[SOUND_LABEL_MAX] =
 {
 	{ "data/BGM/Title.wav", -1 },				// タイトルBGM
-	{ "data/BGM/Tutorial.wav", -1 },			// チュートリアルBGM
 	{ "data/BGM/Game.wav", -1 },				// ゲームBGM
+	{ "data/BGM/Boss.wav", -1 },				// ぼすBGM
 	{ "data/BGM/Result.wav", -1 },				// リザルトBGM
 	{ "data/SE/Shot.wav", 0 },					// 通常攻撃
 	{ "data/SE/Shot0.wav", 0 },					// 弾切れの時の音

@@ -15,6 +15,7 @@
 #include "player3D.h"
 #include "Map2D.h"
 #include "Particle.h"
+#include "sound.h"
 
 //ƒ}ƒNƒ’è‹`
 #define BLOCK_WIGHT (300.0f)		//‰¡•
@@ -268,7 +269,11 @@ bool CMapSwitch::Collision(D3DXVECTOR3 *pPos, D3DXVECTOR3 pPosOld, D3DXVECTOR3 *
 			*bHit = true;
 
 			//‰¼
-			SwitchOn = true;
+			if (SwitchOn == false)
+			{
+				CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_LEVELUP);
+				SwitchOn = true;
+			}
 			OnTime = 120;
 		}
 
@@ -301,6 +306,7 @@ bool CMapSwitch::Collision(D3DXVECTOR3 *pPos, D3DXVECTOR3 pPosOld, D3DXVECTOR3 *
 			//‰¼
 			SwitchOn = true;
 			OnTime = 120;
+			CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_LEVELUP);
 		}
 
 		if (
@@ -317,6 +323,7 @@ bool CMapSwitch::Collision(D3DXVECTOR3 *pPos, D3DXVECTOR3 pPosOld, D3DXVECTOR3 *
 			//‰¼
 			SwitchOn = true;
 			OnTime = 120;
+			CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_LEVELUP);
 		}
 	}
 

@@ -454,6 +454,7 @@ void CPlayerLevel::HitDamage(void)
 		m_nAttackCount = 0;
 		m_pMotion->Set(ACTION_WAIT);
 		CGame::AddDeathCount();
+		CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_PLAYER_DAMAGE);
 	}
 }
 
@@ -531,6 +532,7 @@ void CPlayerLevel::WallAttack(void)
 	if (m_nAttackCount == 8)
 	{
 		CWallAttackSide *pWallAttack = CWallAttackSide::Create(m_bRight);
+		CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_ATTACK_NORMAL);
 		if (m_bRight == true)
 		{
 			pWallAttack->SetPos(D3DXVECTOR3(m_pos.x + 10.0f, m_pos.y, m_pos.z));

@@ -78,8 +78,8 @@ CGame::~CGame()
 //====================================================================
 HRESULT CGame::Init(void)
 {
-	////ƒQ[ƒ€‚ÌBGM‚ðÄ¶‚·‚é
-	//CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_BGM_TUTORIAL);
+	//ƒQ[ƒ€‚ÌBGM‚ðÄ¶‚·‚é
+	CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_BGM_GAME);
 
 	//m_pScoreText = CObject2D::Create();
 	//m_pScoreText->SetPos(D3DXVECTOR3(975.0f, 60.0f, 0.0f));
@@ -344,6 +344,8 @@ void CGame::SetBossEvent(bool bSet)
 	{
 		m_pBossLevel = CBossLevel::Create();
 		m_pBossLevel->SetPos(D3DXVECTOR3(20000.0f, 600.0f, 0.0f));
+		CManager::GetInstance()->GetSound()->StopSound();
+		CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_BGM_BOSS);
 	}
 }
 

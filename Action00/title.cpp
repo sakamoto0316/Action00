@@ -134,11 +134,13 @@ void CTitle::Select(void)
 	{
 		CManager::GetInstance()->SetUseJoyPad(false);
 		CFade::SetFade(CScene::MODE_GAME);
+		CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_ENTER_PUSH);
 	}
 	else if (CManager::GetInstance()->GetInputJoyPad()->GetTrigger(CInputJoypad::BUTTON_A, 0) == true)
 	{
 		CManager::GetInstance()->SetUseJoyPad(true);
 		CFade::SetFade(CScene::MODE_GAME);
+		CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_ENTER_PUSH);
 	}
 }
 

@@ -22,7 +22,7 @@
 #include "sound.h"
 #include "Map2D.h"
 
-#define SET_MODE (CScene::MODE_RESULT)
+#define SET_MODE (CScene::MODE_TITLE)
 
 //Ã“Iƒƒ“ƒo•Ï”éŒ¾
 CManager *CManager::pManager = NULL;
