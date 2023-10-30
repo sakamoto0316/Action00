@@ -11,7 +11,7 @@
 #include "player3D.h"
 
 //マクロ定義
-#define MAX_PAUSE (4)
+#define MAX_PAUSE (3)
 
 //前方宣言
 class CObject2D;
@@ -38,6 +38,12 @@ private:
 	int m_PauseSelect;
 	bool m_Appear;
 	static CObject2D *m_pPauseUI[MAX_PAUSE];
-	static CObject2D *m_pPauseFG;
+	static CObject2D *m_pPauseFG[3];
+	static CObject2D *m_pTutorialMOVE[3];
+	static CObject2D *m_pTutorialJUMP[3];
+	static CObject2D *m_pTutorialATTACK[3];
+	static D3DXVECTOR3 m_MovePos;
+	static D3DXVECTOR3 m_JumpPos;
+	static D3DXVECTOR3 m_AttackPos;
 };
 #endif

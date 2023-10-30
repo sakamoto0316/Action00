@@ -31,25 +31,27 @@
 #include "MapSwitch.h"
 #include "time.h"
 #include "bosslevel.h"
+#include "debugproc.h"
 
 //静的メンバ変数宣言
+CTutorialUI *CGame::m_pTutorialUI = NULL;
 CPlayer3D *CGame::m_pPlayer3D = NULL;
 CPlayerLevel *CGame::m_pPlayerLevel = NULL;
 CBossLevel *CGame::m_pBossLevel = NULL;
 CBreak_Block3D *CGame::m_pBlock3D = NULL;
 CEdit *CGame::m_pEdit = NULL;
-CTutorialUI *CGame::m_pTutorialUI = NULL;
-CObject2D *CGame::m_pTutorialBG = NULL;
-CObject2D *CGame::m_pTutorialText = NULL;
 CPause *CGame::m_pPause = NULL;
 CScore *CGame::m_pScore = NULL;
-CObject2D *CGame::m_pScoreText = NULL;
 CTime *CGame::m_pTime = NULL;
 bool CGame::m_bBossEvent = false;
 bool CGame::m_bGameEnd = false;
-int CGame::m_bGameEndTime = 0;
+int CGame::m_nGameEndTime = 0;
+int CGame::m_nTutorialCount = 0;
+int CGame::m_nDeathCount = 0;
 bool CGame::m_bTextColor = false;
+bool CGame::m_bTutorial = false;
 float CGame::m_fTextColor = 0.0f;
+float CGame::m_StartPosX = 0.0f;
 
 //====================================================================
 //コンストラクタ
@@ -57,6 +59,10 @@ float CGame::m_fTextColor = 0.0f;
 CGame::CGame()
 {
 	m_bBossEvent = false;
+	m_nTutorialCount = 0;
+	m_bTutorial = false;
+	m_StartPosX = 0.0f;
+	m_nDeathCount = 0;
 }
 
 //====================================================================
@@ -75,11 +81,11 @@ HRESULT CGame::Init(void)
 	////ゲームのBGMを再生する
 	//CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_BGM_TUTORIAL);
 
-	m_pScoreText = CObject2D::Create();
-	m_pScoreText->SetPos(D3DXVECTOR3(975.0f, 60.0f, 0.0f));
-	m_pScoreText->SetWight(300.0f);
-	m_pScoreText->SetHeight(70.0f);
-	m_pScoreText->SetTexture("data\\TEXTURE\\SCORE_UI.png");
+	//m_pScoreText = CObject2D::Create();
+	//m_pScoreText->SetPos(D3DXVECTOR3(975.0f, 60.0f, 0.0f));
+	//m_pScoreText->SetWight(300.0f);
+	//m_pScoreText->SetHeight(70.0f);
+	//m_pScoreText->SetTexture("data\\TEXTURE\\SCORE_UI.png");
 
 	////スコアの生成
 	//m_pScore = CScore::Create();
@@ -99,9 +105,10 @@ HRESULT CGame::Init(void)
 
 	//階層構造のプレイヤーモデルの生成
 	m_pPlayerLevel = CPlayerLevel::Create();
-	m_pPlayerLevel->SetPos(D3DXVECTOR3(-800.0f, 100.0f, 0.0f));
-	m_pPlayerLevel->SetPos(D3DXVECTOR3(18700.0f, 500.0f, 0.0f));
-	m_pPlayerLevel->SetReSpownPos(D3DXVECTOR3(-800.0f, 155.0f, 0.0f));
+	m_pPlayerLevel->SetPos(D3DXVECTOR3(3300.0f, 100.0f, 0.0f));
+	//m_pPlayerLevel->SetPos(D3DXVECTOR3(18700.0f, 500.0f, 0.0f));
+	m_pPlayerLevel->SetReSpownPos(D3DXVECTOR3(3300.0f, 155.0f, 0.0f));
+	m_StartPosX = 3300.0f;
 
 	//////BGMの再生
 	//m_pSound->PlaySoundA(CSound::SOUND_LABEL_BGM_TITLE);
@@ -116,6 +123,8 @@ HRESULT CGame::Init(void)
 	{
 		m_pEdit = CEdit::Create();
 		m_pEdit->LoadData(DATA_NAME, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//m_pEdit->LoadData("data\\TXT\\ShortMap00", D3DXVECTOR3(4100.0f, 0.0f, 0.0f));
+		//m_pEdit->LoadData("data\\TXT\\Short01Map", D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		//m_pEdit->LoadData("data\\TXT\\ALLMap", D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		//m_pEdit->LoadData("data\\TXT\\TutorialMap", D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		//m_pEdit->LoadData("data\\TXT\\GameMap", D3DXVECTOR3(1900.0f, 0.0f, 0.0f));
@@ -162,9 +171,6 @@ void CGame::Uninit(void)
 
 	if (m_pTutorialUI != NULL)
 	{
-		//チュートリアルUIの終了処理
-		m_pTutorialUI->Uninit();
-
 		delete m_pTutorialUI;
 		m_pTutorialUI = NULL;
 	}
@@ -196,21 +202,96 @@ void CGame::Update(void)
 
 #endif
 
-	//ポーズの更新処理
-	m_pPause->Update();
-
-	////チュートリアルのスキップ機能
-	//if (m_bTutorial == true && CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_U) == true)
-	//{
-	//	SkipTutorial();
-	//}
-
-
-	//チュートリアルの更新処理
 	if (m_pTutorialUI != NULL)
 	{
 		m_pTutorialUI->Update();
 	}
+
+	if (m_bTutorial == false)
+	{
+		switch (m_nTutorialCount)
+		{
+		case 0:
+			if (m_pPlayerLevel->GetPos().x >= m_StartPosX -100.0f)
+			{
+				m_pTutorialUI = CTutorialUI::Create(m_nTutorialCount);
+				m_nTutorialCount++;
+				m_bTutorial = true;
+			}
+			break;
+
+		case 1:
+			if (m_pPlayerLevel->GetPos().x >= m_StartPosX + 100.0f)
+			{
+				m_pTutorialUI = CTutorialUI::Create(m_nTutorialCount);
+				m_nTutorialCount++;
+				m_bTutorial = true;
+			}
+			break;
+
+		case 2:
+			if (m_pPlayerLevel->GetPos().x >= m_StartPosX + 500.0f)
+			{
+				m_pTutorialUI = CTutorialUI::Create(m_nTutorialCount);
+				m_nTutorialCount++;
+				m_bTutorial = true;
+			}
+			break;
+
+		case 3:
+			if (m_pPlayerLevel->GetPos().x >= m_StartPosX + 1000.0f)
+			{
+				m_pTutorialUI = CTutorialUI::Create(m_nTutorialCount);
+				m_nTutorialCount++;
+				m_bTutorial = true;
+			}
+
+		case 4:
+			if (m_pPlayerLevel->GetPos().x >= m_StartPosX + 2850.0f)
+			{
+				m_pTutorialUI = CTutorialUI::Create(m_nTutorialCount);
+				m_nTutorialCount++;
+				m_bTutorial = true;
+			}
+
+		case 5:
+			if (m_pPlayerLevel->GetPos().x >= m_StartPosX + 3650.0f)
+			{
+				m_pTutorialUI = CTutorialUI::Create(m_nTutorialCount);
+				m_nTutorialCount++;
+				m_bTutorial = true;
+			}
+
+		case 6:
+			if (m_pPlayerLevel->GetPos().x >= m_StartPosX + 5650.0f)
+			{
+				m_pTutorialUI = CTutorialUI::Create(m_nTutorialCount);
+				m_nTutorialCount++;
+				m_bTutorial = true;
+			}
+
+		case 7:
+			if (m_pPlayerLevel->GetPos().x >= m_StartPosX + 8550.0f)
+			{
+				m_pTutorialUI = CTutorialUI::Create(m_nTutorialCount);
+				m_nTutorialCount++;
+				m_bTutorial = true;
+			}
+			break;
+
+		case 8:
+			if (false)
+			{
+				m_pTutorialUI = CTutorialUI::Create(m_nTutorialCount);
+				m_nTutorialCount++;
+				m_bTutorial = true;
+			}
+			break;
+		}
+	}
+
+	//ポーズの更新処理
+	m_pPause->Update();
 
 	//エディットモードのオンオフ
 	if (CManager::GetInstance()->GetEdit() == true)
@@ -226,23 +307,28 @@ void CGame::Update(void)
 	//ゲームモード終了処理
 	if (m_bGameEnd == true)
 	{
-		if (m_bGameEndTime > 0)
+		if (m_nGameEndTime > 0)
 		{
-			m_bGameEndTime--;
+			m_nGameEndTime--;
 		}
 		else
 		{
 			CRanking::ChangeRanking(true);
-			CManager::GetInstance()->GetInstance()->SetSetScoreResult(true);
 			CFade::SetFade(CScene::MODE_RESULT);
 		}
 	}
 
+	CManager::GetInstance()->GetDebugProc()->Print("チュートリアルの段階[%d]\n", m_nTutorialCount - 1);
+
 	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_G) == true)
 	{
 		CRanking::ChangeRanking(true);
-		CManager::GetInstance()->GetInstance()->SetSetScoreResult(true);
+		CManager::GetInstance()->GetInstance()->SetScoreResult(true);
 		CFade::SetFade(CScene::MODE_RESULT);
+	}
+
+	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_F1) == true)
+	{
 		CFade::SetFade(CScene::MODE_RESULT);
 	}
 }
@@ -282,7 +368,7 @@ void CGame::SetTutorial(void)
 //====================================================================
 void CGame::SetTutorialUnderText(char *cName)
 {
-	m_pTutorialText->SetTexture(cName);
+
 }
 
 

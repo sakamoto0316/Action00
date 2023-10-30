@@ -269,6 +269,7 @@ void CBossLevel::StateManager(void)
 			{
 				CGame::SetGameEnd(20);
 				m_State = STATE_DEATH;
+				CManager::GetInstance()->GetInstance()->SetEndScore(CGame::GetDeathCount());
 			}
 			else
 			{

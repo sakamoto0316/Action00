@@ -151,7 +151,7 @@ bool CMapPitFloor::CollisionPlayer(D3DXVECTOR3 *pPos, D3DXVECTOR3 pPosOld, D3DXV
 			if ((pInputKeyboard->GetPress(DIK_S) == false &&
 				pInputKeyboard->GetPress(DIK_DOWN) == false &&
 				pInputJoypad->GetPress(CInputJoypad::BUTTON_DOWN, 0) == false) &&
-				0.01f > pInputJoypad->Get_Stick_Left(0).y)
+				-0.5f < pInputJoypad->Get_Stick_Left(0).y)
 			{
 				bOn = true;
 				pPos->y = mtPos.y + myHeight;		//ƒuƒƒbƒN‚Ì‚¤‚¦‚É‚½‚½‚¹‚é

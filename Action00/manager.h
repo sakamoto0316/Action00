@@ -85,28 +85,21 @@ public:
 	bool GetPause(void) { return m_Pause; }
 	void SetEndScore(int Set) { m_EndScore = Set; }
 	int GetEndScore(void) { return m_EndScore; }
-	void SetEndCombo(int Set) { m_EndCombo = Set; }
-	int GetEndCombo(void) { return m_EndCombo; }
-	void SetEndFall(int Set) { m_EndFall = Set; }
-	int GetEndFall(void) { return m_EndFall; }
-	void SetEndDepth(int Set) { m_EndDepth = Set; }
-	int GetEndDepth(void) { return m_EndDepth; }
 	void SetTutorialStart(bool Set) { m_SetTutorial = Set; }
 	bool GetTutorialStart(void) { return m_SetTutorial; }
-	void SetSetScoreResult(bool Set) { m_SetScoreResult = Set; }
-	bool GetSetScoreResult(void) { return m_SetScoreResult; }
+	void SetScoreResult(bool Set) { m_SetScoreResult = Set; }
+	bool GetScoreResult(void) { return m_SetScoreResult; }
 	void SetSetTutorialPad(bool Set) { m_SetJoyPad = Set; }
 	bool GetSetTutorialPad(void) { return m_SetJoyPad; }
 	void SetPauseOK(bool Set) { m_PauseOK = Set; }
 	bool GetPauseOK(void) { return m_PauseOK; }
+	void SetUseJoyPad(bool Set) { m_bPad = Set; }
+	bool GetUseJoyPad(void) { return m_bPad; }
 
 private:
 	static CManager *pManager;
 
 	int m_EndScore;						//最終的なスコア
-	int m_EndCombo;						//最終的なコンボ
-	int m_EndFall;						//最終的な最高速落下時間
-	int m_EndDepth;						//最終的な深さ
 	bool m_SetTutorial;					//エディットモードかどうか
 	bool m_bEdit;						//エディットモードかどうか
 	bool m_bStop;						//画面停止状態かどうか
@@ -114,6 +107,7 @@ private:
 	bool m_SetScoreResult;				//リザルトにスコア情報を入れるかどうか
 	bool m_SetJoyPad;					//ジョイパッドで操作しているかどうか
 	bool m_PauseOK;						//ポーズを押しても大丈夫か
+	bool m_bPad;						//ジョイパッドを使用しているかどうか
 	CRenderer *m_pRenderer;				//レンダラーのポインタ
 	CDebugProc *m_pDebugProc;			//デバッグプロックのポインタ
 	CInputKeyboard *m_pInputKeyboard;	//キーボードのポインタ

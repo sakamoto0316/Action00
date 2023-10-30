@@ -29,19 +29,15 @@ public:
 	virtual void Update(void);
 	virtual void Draw(void);
 
-	CObject2D *GetPlayerBG(void) { return m_pPlayerBG; }
+	CObject2D *GetPlayerBG(void) { return m_pTutorialText; }
 
 private:
 	bool m_bColor;
 	float m_SetColor;
 	float m_SetColorHlaf;
 	int m_TurorialNumber;
-	int m_PushNumber;
-	CObject2D *m_pScreenBG;
-	CObject2D *m_pPlayerBG;
-	CObject2D *m_pChatBG;
-	CObject2D *m_pChat;
-	CObject2D *m_pTurorialText;
-	CObject2D *m_pArrorw;
+	CObject2D *m_pTIPS;
+	CObject2D *m_pTutorialText;
+	CObject2D *m_pTextBG;
 };
 #endif

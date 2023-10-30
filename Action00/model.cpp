@@ -23,6 +23,9 @@ CModel::CModel()
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//位置
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//向き
 	m_pParent = NULL;							//親モデルへのポインタ
+
+	m_Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	m_bColorChange = false;
 }
 
 //====================================================================
@@ -182,8 +185,21 @@ void CModel::Draw(void)
 
 	for (int nCntMat = 0; nCntMat < (int)m_dwNumMat; nCntMat++)
 	{
-		//マテリアルの設定
-		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+		if (m_bColorChange == false)
+		{
+			//マテリアルの設定
+			pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+		}
+		else
+		{
+			D3DCOLORVALUE color = pMat[nCntMat].MatD3D.Diffuse;
+			pMat[nCntMat].MatD3D.Diffuse = m_Color;
+				
+			//マテリアルの設定
+			pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+
+			pMat[nCntMat].MatD3D.Diffuse = color;
+		}
 
 		//テクスチャの設定
 		pDevice->SetTexture(0, m_pTexture[nCntMat]);

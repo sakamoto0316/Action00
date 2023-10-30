@@ -184,7 +184,7 @@ void CCamera::Update(void)
 
 	if (CManager::GetInstance()->GetScene()->GetMode() == CScene::MODE_GAME)
 	{
-		if (pPlayer->GetState() == CPlayerLevel::STATE_NORMAL)
+		if (pPlayer->GetState() == CPlayerLevel::STATE_NORMAL || pPlayer->GetState() == CPlayerLevel::STATE_NODAMAGE)
 		{
 			m_PlayerPos = pPlayer->GetPos();
 			m_DelCameraPos = pPlayer->GetPos();

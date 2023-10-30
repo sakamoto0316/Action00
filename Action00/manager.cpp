@@ -22,7 +22,7 @@
 #include "sound.h"
 #include "Map2D.h"
 
-#define SET_MODE (CScene::MODE_GAME)
+#define SET_MODE (CScene::MODE_RESULT)
 
 //Ã“Iƒƒ“ƒo•Ï”éŒ¾
 CManager *CManager::pManager = NULL;
@@ -41,10 +41,9 @@ CManager::CManager()
 	m_SetScoreResult = false;
 	m_SetJoyPad = false;
 	m_PauseOK = false;
-	m_EndScore = 0;
-	m_EndCombo = 0;
-	m_EndFall = 0;
-	m_EndDepth = 0;
+	m_bPad = false;
+	m_EndScore = 157;
+
 	pManager = NULL;
 	m_pRenderer = NULL;
 	m_pDebugProc = NULL;
@@ -207,6 +206,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	//////‘½d”wŒi‚Ì¶¬
 	////CMultiBG::Create();
+
+	m_PauseOK = true;
 
 	return S_OK;
 }

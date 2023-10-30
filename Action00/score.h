@@ -11,7 +11,7 @@
 #include "object.h"
 
 //マクロ定義
-#define NUM_SCORE (8)		//スコアの桁数
+#define NUM_SCORE (4)		//スコアの桁数
 
 //前方宣言
 class CObject;

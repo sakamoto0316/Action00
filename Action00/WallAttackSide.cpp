@@ -135,7 +135,7 @@ void CWallAttackSide::Update(void)
 	m_posOld = pos;
 
 	//Œ¸ŠŒW”
-	m_move.x = m_move.x * 0.7f;
+	m_move.x = m_move.x * 0.8f;
 
 	//‘¬“x‚ªˆê’èˆÈ‰º‚É‚È‚é‚Æ“®‚«‚ðŽ~‚ß‚Ä—Ž‰º‚³‚¹‚é
 	if (m_move.x > -0.01f && m_move.x < 0.01f)

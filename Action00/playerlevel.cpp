@@ -136,7 +136,7 @@ void CPlayerLevel::Uninit(void)
 //====================================================================
 void CPlayerLevel::Update(void)
 {
-	if (m_State == STATE_NORMAL)
+	if (m_State == STATE_NORMAL || m_State == STATE_NODAMAGE)
 	{
 		//キーボードの取得
 		CInputKeyboard *pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
@@ -280,8 +280,40 @@ void CPlayerLevel::StateManager(void)
 	case STATE_WAIT:
 		if (m_nStateCount <= 0)
 		{
+			if (CGame::GetBossEvent() == false)
+			{
+				m_State = STATE_NORMAL;
+				m_nStateCount = 0;
+			}
+			else
+			{
+				m_State = STATE_NODAMAGE;
+				m_nStateCount = 120;
+				for (int nCnt = 0; nCnt < 64; nCnt++)
+				{
+					if (m_apModel[nCnt] != NULL)
+					{
+						m_apModel[nCnt]->SetColorChange(true);
+						m_apModel[nCnt]->SetColor(D3DXCOLOR(0.9f, 0.3f, 0.0f, 0.5f));
+					}
+				}
+			}
+		}
+		break;
+
+	case STATE_NODAMAGE:
+		if (m_nStateCount <= 0)
+		{
 			m_State = STATE_NORMAL;
 			m_nStateCount = 0;
+
+			for (int nCnt = 0; nCnt < 64; nCnt++)
+			{
+				if (m_apModel[nCnt] != NULL)
+				{
+					m_apModel[nCnt]->SetColorChange(false);
+				}
+			}
 		}
 		break;
 	}
@@ -417,9 +449,11 @@ void CPlayerLevel::HitDamage(void)
 		m_State = STATE_DEATH;
 		m_nStateCount = 1;
 		m_pos = D3DXVECTOR3(m_ReSpownPos.x, m_ReSpownPos.y + -100.0f, m_ReSpownPos.z);
+		m_move = INITVECTOR3;
 		m_Action = ACTION_WAIT;
 		m_nAttackCount = 0;
 		m_pMotion->Set(ACTION_WAIT);
+		CGame::AddDeathCount();
 	}
 }
 
@@ -580,30 +614,54 @@ bool CPlayerLevel::CollisionObject(D3DXVECTOR3 *pos, bool bX)
 
 			CObject::TYPE type = pObj->GetType();			//種類を取得
 
-			if (type == TYPE_MAPBLOCK ||
-				type == TYPE_MAPDOOR || 
-				type == TYPE_MAPSWITCH || 
-				type == TYPE_MAPSDOOR ||
-				type == TYPE_MAPSSWITCH ||
-				type == TYPE_MAPNEEDLE ||
-				type == TYPE_MAPNEEDLELR ||
-				type == TYPE_MAPNEEDLEUD ||
-				type == TYPE_MAPPITFLOOR ||
-				type == TYPE_MAPCANNON)
-			{//種類がブロックの時
+			if (m_State != STATE_NODAMAGE)
+			{
+				if (type == TYPE_MAPBLOCK ||
+					type == TYPE_MAPDOOR ||
+					type == TYPE_MAPSWITCH ||
+					type == TYPE_MAPSDOOR ||
+					type == TYPE_MAPSSWITCH ||
+					type == TYPE_MAPNEEDLE ||
+					type == TYPE_MAPNEEDLELR ||
+					type == TYPE_MAPNEEDLEUD ||
+					type == TYPE_MAPPITFLOOR ||
+					type == TYPE_MAPCANNON)
+				{//種類がブロックの時
 
-				if (pObj->CollisionPlayer(pos, m_posOld, &m_move, HEIGHT_COLLISION * 0.5f, WIDTH_COLLISION * 0.5f, &m_bWallJump, &m_bHit, bX) == true)
-				{
-					m_nJump = 2;
-					m_bAirAttack = false;
-					m_move.y = 0.0f;
+					if (pObj->CollisionPlayer(pos, m_posOld, &m_move, HEIGHT_COLLISION * 0.5f, WIDTH_COLLISION * 0.5f, &m_bWallJump, &m_bHit, bX) == true)
+					{
+						m_nJump = 2;
+						m_bAirAttack = false;
+						m_move.y = 0.0f;
 
-					return true;
+						return true;
+					}
+
+					if (m_bHit == true)
+					{
+						return true;
+					}
 				}
+			}
+			else
+			{
+				if (type == TYPE_MAPBLOCK ||
+					type == TYPE_MAPPITFLOOR)
+				{//種類がブロックの時
 
-				if (m_bHit == true)
-				{
-					return true;
+					if (pObj->CollisionPlayer(pos, m_posOld, &m_move, HEIGHT_COLLISION * 0.5f, WIDTH_COLLISION * 0.5f, &m_bWallJump, &m_bHit, bX) == true)
+					{
+						m_nJump = 2;
+						m_bAirAttack = false;
+						m_move.y = 0.0f;
+
+						return true;
+					}
+
+					if (m_bHit == true)
+					{
+						return true;
+					}
 				}
 			}
 
@@ -708,7 +766,7 @@ void CPlayerLevel::CollisionBoss(void)
 //====================================================================
 void CPlayerLevel::Draw(void)
 {
-	if (m_State == STATE_NORMAL)
+	if (m_State == STATE_NORMAL || m_State == STATE_NODAMAGE)
 	{
 		//デバイスの取得
 		LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();

@@ -40,6 +40,11 @@ private:
 
 	static int m_nSelect;
 	static int m_CreateCount;
+	static D3DXVECTOR2 m_Tex;
+	static D3DXCOLOR m_Color;
 	static CObject2D *m_pTitle;
+	static CObject2D *m_pTitleLogo[4];
+	static CObject2D *m_pTitleButton;
+
 };
 #endif

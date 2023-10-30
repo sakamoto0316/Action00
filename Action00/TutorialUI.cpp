@@ -10,6 +10,7 @@
 #include "object2D.h"
 #include "input.h"
 #include "sound.h"
+#include "playerlevel.h"
 
 //静的メンバ変数宣言
 
@@ -23,25 +24,9 @@ CTutorialUI::CTutorialUI(int TutorialNumber)
 	m_SetColorHlaf = 0.0f;
 	m_bColor = true;
 
-	switch (TutorialNumber)
-	{
-	case 1:
-		m_PushNumber = 1;
-		break;
-	case 4:
-		m_PushNumber = 1;
-		break;
-	default:
-		m_PushNumber = 0;
-		break;
-	}
-
-	m_pScreenBG = NULL;
-	m_pChatBG = NULL;
-	m_pPlayerBG = NULL;
-	m_pChat = NULL;
-	m_pTurorialText = NULL;
-	m_pArrorw = NULL;
+	m_pTIPS = NULL;
+	m_pTextBG = NULL;
+	m_pTutorialText = NULL;
 }
 
 //====================================================================
@@ -79,152 +64,99 @@ CTutorialUI *CTutorialUI::Create(int TutorialNumber)
 //====================================================================
 HRESULT CTutorialUI::Init(void)
 {
-	m_pScreenBG = CObject2D::Create(7);
-	m_pScreenBG->SetType(CObject::TYPE_TUTORIALUI);
+	m_pTextBG = CObject2D::Create(7);
+	m_pTextBG->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
+	m_pTextBG->SetType(CObject::TYPE_TUTORIALUI);
+	m_pTextBG->SetTexture("data\\TEXTURE\\Test.jpg");
+	m_pTextBG->SetPos(D3DXVECTOR3(0.0f, 500.0f, 0.0f));
+	m_pTextBG->SetHeight(50.0f);
 
-	m_pChatBG = CObject2D::Create(7);
-	m_pChatBG->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	m_pChatBG->SetType(CObject::TYPE_TUTORIALUI);
-	m_pChatBG->SetTexture("data\\TEXTURE\\TutorialBG00.png");
+	m_pTIPS = CObject2D::Create(7);
+	m_pTIPS->SetType(CObject::TYPE_TUTORIALUI);
+	m_pTIPS->SetTexture("data\\TEXTURE\\Tutorial_TIPS.png");
+	m_pTIPS->SetPos(D3DXVECTOR3(50.0f, 500.0f, 0.0f));
+	m_pTIPS->SetWight(100.0f);
+	m_pTIPS->SetHeight(100.0f);
 
-	m_pPlayerBG = CObject2D::Create(7);
-	m_pPlayerBG->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	m_pPlayerBG->SetType(CObject::TYPE_TUTORIALUI);
-	m_pPlayerBG->SetTexture("data\\TEXTURE\\TutorialPlayer.png");
-
-	m_pChat = CObject2D::Create(7);
-	m_pChat->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	m_pChat->SetType(CObject::TYPE_TUTORIALUI);
-	m_pChat->SetTexture("data\\TEXTURE\\TutorialChat.png");
-
-	m_pTurorialText = CObject2D::Create(7);
-	m_pTurorialText->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	m_pTurorialText->SetType(CObject::TYPE_TUTORIALUI);
-
-	m_pArrorw = CObject2D::Create(7);
-	m_pArrorw->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	m_pArrorw->SetType(CObject::TYPE_TUTORIALUI);
-	m_pArrorw->SetTexture("data\\TEXTURE\\Arrorw.png");
+	m_pTutorialText = CObject2D::Create(7);
+	m_pTutorialText->SetType(CObject::TYPE_TUTORIALUI);
+	m_pTutorialText->SetPos(D3DXVECTOR3(230.0f, 500.0f, 0.0f));
+	m_pTutorialText->SetWight(300.0f);
+	m_pTutorialText->SetHeight(150.0f);
 
 	switch (m_TurorialNumber)
 	{
 	case 0:
-		m_pScreenBG->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
-		m_pScreenBG->SetPos(D3DXVECTOR3(640.0f, 360.0f, 0.0f));
-		m_pScreenBG->SetWight(1280.0f);
-		m_pScreenBG->SetHeight(720.0f);
-		m_pScreenBG->SetTexture("data\\TEXTURE\\Test.jpg");
-
-		m_pChatBG->SetPos(D3DXVECTOR3(640.0f, 200.0f, 0.0f));
-		m_pChatBG->SetWight(2000.0f);
-		m_pChatBG->SetHeight(800.0f);
-
-		m_pPlayerBG->SetPos(D3DXVECTOR3(300.0f, 500.0f, 0.0f));
-		m_pPlayerBG->SetWight(600.0f);
-		m_pPlayerBG->SetHeight(600.0f);
-
-		m_pChat->SetPos(D3DXVECTOR3(900.0f, 200.0f, 0.0f));
-		m_pChat->SetWight(1000.0f);
-		m_pChat->SetHeight(500.0f);
-
-		m_pTurorialText->SetPos(D3DXVECTOR3(930.0f, 225.0f, 0.0f));
-		m_pTurorialText->SetWight(500.0f);
-		m_pTurorialText->SetHeight(400.0f);
-		m_pTurorialText->SetTexture("data\\TEXTURE\\TutorialText000.png");
-
-		m_pArrorw->SetPos(D3DXVECTOR3(-1000.0f, -1000.0f, 0.0f));
-		m_pArrorw->SetWight(0.0f);
-		m_pArrorw->SetHeight(0.0f);
-
-
+		if (CManager::GetInstance()->GetUseJoyPad() == false)
+		{
+			m_pTextBG->SetWight(500.0f);
+			m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_008.png");
+		}
+		else
+		{
+			m_pTextBG->SetWight(640.0f);
+			m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_009.png");
+		}
 		break;
+
 	case 1:
-		m_pScreenBG->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-		m_pScreenBG->SetPos(D3DXVECTOR3(200.0f, 75.0f, 0.0f));
-		m_pScreenBG->SetWight(18000.0f);
-		m_pScreenBG->SetHeight(5000.0f);
-		m_pScreenBG->SetTexture("data\\TEXTURE\\shadow003.png");
+		if (CManager::GetInstance()->GetUseJoyPad() == false)
+		{
+			m_pTextBG->SetWight(720.0f);
+			m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_000.png");
+		}
+		else
+		{
+			m_pTextBG->SetWight(620.0f);
+			m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_010.png");
+		}
+		break;
 
-		m_pChatBG->SetPos(D3DXVECTOR3(-1000.0f, -1000.0f, 0.0f));
-		m_pChatBG->SetWight(0.0f);
-		m_pChatBG->SetHeight(0.0f);
+	case 2:
+		m_pTextBG->SetWight(500.0f);
+		m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_001.png");
+		break;
 
-		m_pPlayerBG->SetPos(D3DXVECTOR3(400.0f, 620.0f, 0.0f));
-		m_pPlayerBG->SetWight(400.0f);
-		m_pPlayerBG->SetHeight(400.0f);
-
-		m_pChat->SetPos(D3DXVECTOR3(900.0f, 500.0f, 0.0f));
-		m_pChat->SetWight(1000.0f);
-		m_pChat->SetHeight(500.0f);
-
-		m_pTurorialText->SetPos(D3DXVECTOR3(930.0f, 525.0f, 0.0f));
-		m_pTurorialText->SetWight(500.0f);
-		m_pTurorialText->SetHeight(400.0f);
-		m_pTurorialText->SetTexture("data\\TEXTURE\\Tutorial_Sample00.png");
-
-		m_pArrorw->SetPos(D3DXVECTOR3(520.0f, 290.0f, 0.0f));
-		m_pArrorw->SetWight(1000.0f);
-		m_pArrorw->SetHeight(300.0f);
-		m_pArrorw->SetRot(D3DXVECTOR3(0.0f, 0.0f, D3DX_PI * 0.78f));
+	case 3:
+		if (CManager::GetInstance()->GetUseJoyPad() == false)
+		{
+			m_pTextBG->SetWight(450.0f);
+			m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_002.png");
+		}
+		else
+		{
+			m_pTextBG->SetWight(370.0f);
+			m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_011.png");
+		}
 		break;
 
 	case 4:
-		m_pScreenBG->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-		m_pScreenBG->SetPos(D3DXVECTOR3(200.0f, 75.0f, 0.0f));
-		m_pScreenBG->SetWight(18000.0f);
-		m_pScreenBG->SetHeight(5000.0f);
-		m_pScreenBG->SetTexture("data\\TEXTURE\\shadow003.png");
+		m_pTextBG->SetWight(750.0f);
+		m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_003.png");
+		break;
 
-		m_pChatBG->SetPos(D3DXVECTOR3(-1000.0f, -1000.0f, 0.0f));
-		m_pChatBG->SetWight(0.0f);
-		m_pChatBG->SetHeight(0.0f);
+	case 5:
+		m_pTextBG->SetWight(750.0f);
+		m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_004.png");
+		break;
 
-		m_pPlayerBG->SetPos(D3DXVECTOR3(200.0f, 620.0f, 0.0f));
-		m_pPlayerBG->SetWight(400.0f);
-		m_pPlayerBG->SetHeight(400.0f);
+	case 6:
+		m_pTextBG->SetWight(750.0);
+		m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_005.png");
+		break;
 
-		m_pChat->SetPos(D3DXVECTOR3(700.0f, 500.0f, 0.0f));
-		m_pChat->SetWight(1000.0f);
-		m_pChat->SetHeight(500.0f);
+	case 7:
+		m_pTextBG->SetWight(750.0f);
+		m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_006.png");
+		break;
 
-		m_pTurorialText->SetPos(D3DXVECTOR3(730.0f, 545.0f, 0.0f));
-		m_pTurorialText->SetWight(500.0f);
-		m_pTurorialText->SetHeight(400.0f);
-		m_pTurorialText->SetTexture("data\\TEXTURE\\Tutorial_Sample00.png");
-
-		m_pArrorw->SetPos(D3DXVECTOR3(720.0f, 290.0f, 0.0f));
-		m_pArrorw->SetWight(1000.0f);
-		m_pArrorw->SetHeight(300.0f);
-		m_pArrorw->SetRot(D3DXVECTOR3(0.0f, 0.0f, D3DX_PI * 0.78f));
+	case 8:
+		m_pTextBG->SetWight(600.0f);
+		m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_007.png");
 		break;
 
 	default:
-		m_pScreenBG->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
-		m_pScreenBG->SetPos(D3DXVECTOR3(640.0f, 360.0f, 0.0f));
-		m_pScreenBG->SetWight(1280.0f);
-		m_pScreenBG->SetHeight(720.0f);
-		m_pScreenBG->SetTexture("data\\TEXTURE\\Test.jpg");
-
-		m_pChatBG->SetPos(D3DXVECTOR3(640.0f, 200.0f, 0.0f));
-		m_pChatBG->SetWight(2000.0f);
-		m_pChatBG->SetHeight(800.0f);
-
-		m_pPlayerBG->SetPos(D3DXVECTOR3(300.0f, 500.0f, 0.0f));
-		m_pPlayerBG->SetWight(600.0f);
-		m_pPlayerBG->SetHeight(600.0f);
-
-		m_pChat->SetPos(D3DXVECTOR3(900.0f, 200.0f, 0.0f));
-		m_pChat->SetWight(1000.0f);
-		m_pChat->SetHeight(500.0f);
-
-		m_pTurorialText->SetPos(D3DXVECTOR3(930.0f, 525.0f, 0.0f));
-		m_pTurorialText->SetWight(500.0f);
-		m_pTurorialText->SetHeight(400.0f);
-		m_pTurorialText->SetTexture("data\\TEXTURE\\Tutorial_Sample00.png");
-
-		m_pArrorw->SetPos(D3DXVECTOR3(-1000.0f, -1000.0f, 0.0f));
-		m_pArrorw->SetWight(0.0f);
-		m_pArrorw->SetHeight(0.0f);
+		m_pTutorialText->SetTexture("data\\TEXTURE\\Tutorial_000.png");
 		break;
 	}
 
@@ -244,35 +176,20 @@ void CTutorialUI::Uninit(void)
 //====================================================================
 void CTutorialUI::DeleteUI(void)
 {
-	if (m_pScreenBG != NULL)
+	if (m_pTIPS != NULL)
 	{
-		m_pScreenBG->Uninit();
-		m_pScreenBG = NULL;
+		m_pTIPS->Uninit();
+		m_pTIPS = NULL;
 	}
-	if (m_pChatBG != NULL)
+	if (m_pTextBG != NULL)
 	{
-		m_pChatBG->Uninit();
-		m_pChatBG = NULL;
+		m_pTextBG->Uninit();
+		m_pTextBG = NULL;
 	}
-	if (m_pPlayerBG != NULL)
+	if (m_pTutorialText != NULL)
 	{
-		m_pPlayerBG->Uninit();
-		m_pPlayerBG = NULL;
-	}
-	if (m_pChat != NULL)
-	{
-		m_pChat->Uninit();
-		m_pChat = NULL;
-	}
-	if (m_pTurorialText != NULL)
-	{
-		m_pTurorialText->Uninit();
-		m_pTurorialText = NULL;
-	}
-	if (m_pArrorw != NULL)
-	{
-		m_pArrorw->Uninit();
-		m_pArrorw = NULL;
+		m_pTutorialText->Uninit();
+		m_pTutorialText = NULL;
 	}
 }
 
@@ -294,182 +211,60 @@ void CTutorialUI::Update(void)
 	switch (m_TurorialNumber)
 	{
 	case 0:
-		m_pScreenBG->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, m_SetColorHlaf));
-		break;
-	case 1:
-		m_pScreenBG->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_SetColorHlaf));
-		break;
-	default:
-		m_pScreenBG->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, m_SetColorHlaf));
-		break;
-	}
-
-	m_pChatBG->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_SetColor));
-	m_pPlayerBG->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_SetColor));
-	m_pChat->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_SetColor));
-	m_pTurorialText->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_SetColor));
-	m_pArrorw->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_SetColor));
-
-	//何回目のチュートリアルか判断
-	if (m_TurorialNumber == 1)
-	{
-		//会話の残り回数
-		switch (m_PushNumber)
+		if (CGame::GetPlayerLevel()->GetPos().x > CGame::GetStartPosX() + 100.0f)
 		{
-		case 1:
-			m_pScreenBG->SetPos(D3DXVECTOR3(200.0f, 75.0f, 0.0f));
-			m_pScreenBG->SetWight(18000.0f);
-			m_pScreenBG->SetHeight(5000.0f);
-
-			m_pArrorw->SetPos(D3DXVECTOR3(520.0f, 290.0f, 0.0f));
-			m_pArrorw->SetWight(1000.0f);
-			m_pArrorw->SetHeight(300.0f);
-			m_pArrorw->SetRot(D3DXVECTOR3(0.0f, 0.0f, D3DX_PI * 0.78f));
-
-			m_pTurorialText->SetTexture("data\\TEXTURE\\TutorialText001.png");
-			break;
-		case 0:
-			m_pScreenBG->SetPos(D3DXVECTOR3(200.0f, 200.0f, 0.0f));
-			m_pScreenBG->SetWight(15000.0f);
-			m_pScreenBG->SetHeight(2500.0f);
-
-			m_pArrorw->SetPos(D3DXVECTOR3(520.0f, 340.0f, 0.0f));
-			m_pArrorw->SetWight(850.0f);
-			m_pArrorw->SetHeight(300.0f);
-			m_pArrorw->SetRot(D3DXVECTOR3(0.0f, 0.0f, D3DX_PI * 0.85f));
-
-			m_pTurorialText->SetTexture("data\\TEXTURE\\TutorialText002.png");
-			break;
-		}
-	}
-	else if (m_TurorialNumber == 2)
-	{
-		m_pTurorialText->SetPos(D3DXVECTOR3(930.0f, 275.0f, 0.0f));
-		m_pTurorialText->SetWight(500.0f);
-		m_pTurorialText->SetHeight(400.0f);
-		m_pTurorialText->SetTexture("data\\TEXTURE\\TutorialText003.png");
-
-		if (CManager::GetInstance()->GetSetTutorialPad() == false)
-		{
-			CGame::SetTutorialUnderText("data\\TEXTURE\\TutorialUnder001.png");
-		}
-		else
-		{
-			CGame::SetTutorialUnderText("data\\TEXTURE\\TutorialUnderPad001.png");
-		}
-	}
-	else if (m_TurorialNumber == 3)
-	{
-		m_pTurorialText->SetPos(D3DXVECTOR3(930.0f, 225.0f, 0.0f));
-		m_pTurorialText->SetWight(500.0f);
-		m_pTurorialText->SetHeight(400.0f);
-		m_pTurorialText->SetTexture("data\\TEXTURE\\TutorialText004.png");
-
-		CGame::SetTutorialUnderText("data\\TEXTURE\\TutorialUnder002.png");
-	}
-	else if (m_TurorialNumber == 4)
-	{
-		//会話の残り回数
-		switch (m_PushNumber)
-		{
-		case 1:
-			m_pScreenBG->SetPos(D3DXVECTOR3(1230.0f, 360.0f, 0.0f));
-			m_pScreenBG->SetWight(10000.0f);
-			m_pScreenBG->SetHeight(18000.0f);
-
-			m_pArrorw->SetPos(D3DXVECTOR3(1100.0f, 500.0f, 0.0f));
-			m_pArrorw->SetWight(400.0f);
-			m_pArrorw->SetHeight(300.0f);
-			m_pArrorw->SetRot(D3DXVECTOR3(0.0f, 0.0f, D3DX_PI * 0.0f));
-
-			m_pTurorialText->SetTexture("data\\TEXTURE\\TutorialText006.png");
-			break;
-		case 0:
-			m_pScreenBG->SetPos(D3DXVECTOR3(200.0f, 135.0f, 0.0f));
-			m_pScreenBG->SetWight(15000.0f);
-			m_pScreenBG->SetHeight(2000.0f);
-
-			m_pArrorw->SetPos(D3DXVECTOR3(400.0f, 290.0f, 0.0f));
-			m_pArrorw->SetWight(750.0f);
-			m_pArrorw->SetHeight(300.0f);
-			m_pArrorw->SetRot(D3DXVECTOR3(0.0f, 0.0f, D3DX_PI * 0.75f));
-
-			m_pTurorialText->SetTexture("data\\TEXTURE\\TutorialText007.png");
-			break;
-		}
-		CGame::SetTutorialUnderText("data\\TEXTURE\\TutorialUnder003.png");
-	}
-	else if (m_TurorialNumber == 5)
-	{
-		m_pScreenBG->SetPos(D3DXVECTOR3(200.0f, 200.0f, 0.0f));
-		m_pScreenBG->SetWight(15000.0f);
-		m_pScreenBG->SetHeight(2500.0f);
-
-		m_pChatBG->SetPos(D3DXVECTOR3(640.0f, 200.0f, 0.0f));
-		m_pChatBG->SetWight(2000.0f);
-		m_pChatBG->SetHeight(800.0f);
-
-		m_pPlayerBG->SetPos(D3DXVECTOR3(300.0f, 500.0f, 0.0f));
-		m_pPlayerBG->SetWight(600.0f);
-		m_pPlayerBG->SetHeight(600.0f);
-
-		m_pChat->SetPos(D3DXVECTOR3(900.0f, 200.0f, 0.0f));
-		m_pChat->SetWight(1000.0f);
-		m_pChat->SetHeight(500.0f);
-
-		m_pArrorw->SetWight(0.0f);
-		m_pArrorw->SetHeight(0.0f);
-
-		m_pTurorialText->SetPos(D3DXVECTOR3(930.0f, 240.0f, 0.0f));
-		m_pTurorialText->SetWight(500.0f);
-		m_pTurorialText->SetHeight(400.0f);
-		m_pTurorialText->SetTexture("data\\TEXTURE\\TutorialText005.png");
-
-		CGame::SetTutorialUnderText("data\\TEXTURE\\TutorialUnder003.png");
-	}
-
-	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) == true ||
-		CManager::GetInstance()->GetInputJoyPad()->GetTrigger(CInputJoypad::BUTTON_A, 0) == true)
-	{
-		CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_ENTER_PUSH);
-
-		if (m_PushNumber > 0)
-		{
-			m_PushNumber--;
-		}
-		else
-		{
-			m_bColor = false;
-		}
-	}
-
-	if (m_bColor == true)
-	{
-		if (m_SetColor < 1.0f)
-		{
-			m_SetColor += 0.05f;
-		}
-
-		if (m_SetColorHlaf < 0.75f)
-		{
-			m_SetColorHlaf += 0.0375f;
-		}
-	}
-	else
-	{
-		if (m_SetColor > 0.0f)
-		{
-			m_SetColor -= 0.1f;
-		}
-
-		if (m_SetColorHlaf > 0.0f)
-		{
-			m_SetColorHlaf -= 0.075f;
-		}
-		else
-		{
+			CGame::SetTutorial(false);
 			DeleteTutorial();
 		}
+		break;
+	case 1:
+		if (CGame::GetPlayerLevel()->GetPos().x > CGame::GetStartPosX() + 500.0f)
+		{
+			CGame::SetTutorial(false);
+			DeleteTutorial();
+		}
+		break;
+	case 2:
+		if (CGame::GetPlayerLevel()->GetPos().x > CGame::GetStartPosX() + 1000.0f)
+		{
+			CGame::SetTutorial(false);
+			DeleteTutorial();
+		}
+		break;
+	case 3:
+		if (CGame::GetPlayerLevel()->GetPos().x > CGame::GetStartPosX() + 1850.0f)
+		{
+			CGame::SetTutorial(false);
+			DeleteTutorial();
+		}
+		break;
+	case 4:
+		if (CGame::GetPlayerLevel()->GetPos().x > CGame::GetStartPosX() + 3150.0f)
+		{
+			CGame::SetTutorial(false);
+			DeleteTutorial();
+		}
+		break;
+	case 5:
+		if (CGame::GetPlayerLevel()->GetPos().x > CGame::GetStartPosX() + 4550.0f)
+		{
+			CGame::SetTutorial(false);
+			DeleteTutorial();
+		}
+	case 6:
+		if (CGame::GetPlayerLevel()->GetPos().x > CGame::GetStartPosX() + 7050.0f)
+		{
+			CGame::SetTutorial(false);
+			DeleteTutorial();
+		}
+
+	case 7:
+		if (CGame::GetPlayerLevel()->GetPos().x > CGame::GetStartPosX() + 8950.0f)
+		{
+			CGame::SetTutorial(false);
+			DeleteTutorial();
+		}
+		break;
 	}
 }
 

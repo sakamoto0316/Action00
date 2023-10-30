@@ -24,26 +24,9 @@
 //静的メンバ変数宣言
 CObject2D *CResult::m_pResult = NULL;
 CRanking *CResult::m_pRanking = NULL;
-CScore *CResult::m_NormalScore = NULL;
-CScore *CResult::m_MaxConbo = NULL;
-CScore *CResult::m_MaxFall = NULL;
-CScore *CResult::m_Depth = NULL;
-CScore *CResult::m_TotalScore = NULL;
-CObject2D *CResult::m_NormalScoreText = NULL;
-CObject2D *CResult::m_MaxConboText = NULL;
-CObject2D *CResult::m_MaxFallText = NULL;
-CObject2D *CResult::m_DepthText = NULL;
-CObject2D *CResult::m_TotalScoreText = NULL;
-CObject2D *CResult::m_RankText = NULL;
-CObject2D *CResult::m_ResultText = NULL;
-CObject2D *CResult::m_RankingText = NULL;
-float CResult::m_NormalScorePosX = -1000.0f;
-float CResult::m_MaxConboPosX = -1000.0f;
-float CResult::m_MaxFallPosX = -1000.0f;
-float CResult::m_DepthPosX = -1000.0f;
-float CResult::m_TotalScorePosX = SCORE_POSX;
-float CResult::m_ResultPosX = 640.0f;
-float CResult::RankingPosX = 1500.0f;
+CObject2D *CResult::m_NormalText = NULL;
+CObject2D *CResult::m_DeathText = NULL;
+CScore *CResult::m_DeathScore = NULL;
 bool CResult::m_Appear = false;
 int CResult::m_AddScoreCount = 0;
 int CResult::m_AddTotalScore = 0;
@@ -53,28 +36,7 @@ int CResult::m_AddTotalScore = 0;
 //====================================================================
 CResult::CResult()
 {
-	m_NormalScorePosX = -1000.0f;
-	m_MaxConboPosX = -1000.0f;
-	m_MaxFallPosX = -1000.0f;
-	m_DepthPosX = -1000.0f;
-
-	if (CManager::GetInstance()->GetSetScoreResult() == true)
-	{
-		m_TotalScorePosX = SCORE_POSX;
-		m_ResultPosX = 640.0f;
-		RankingPosX = 1550.0f;
-		m_Appear = true;
-		m_AddScoreCount = 0;
-	}
-	else
-	{
-		m_TotalScorePosX = -1000.0f;
-		m_ResultPosX = -1000.0;
-		RankingPosX = 500.0f;
-		m_Appear = false;
-		m_AddScoreCount = 6;
-	}
-
+	m_AddScoreCount = 0;
 	m_AddTotalScore = 0;
 }
 
@@ -94,82 +56,92 @@ HRESULT CResult::Init(void)
 	CTexture *pTexture = CManager::GetInstance()->GetTexture();;
 	CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_BGM_RESULT);
 
-	LoadBlock("data\\TXT\\Result02", D3DXVECTOR3(-440.0f - 700.0f, 400.0f, 200.0f));
-	LoadBlock("data\\TXT\\Result02", D3DXVECTOR3(-440.0f + 700.0f, 400.0f, 200.0f));
+	m_AddTotalScore = CManager::GetInstance()->GetEndScore();
 
-	m_pRanking = CRanking::Create();
-	//m_pResult = CObject2D::Create();
-	//m_pResult->SetPos(D3DXVECTOR3(640.0f, 360.0f, 0.0f));
-	//m_pResult->SetWight(1280.0f);
-	//m_pResult->SetHeight(720.0f);
+	//LoadBlock("data\\TXT\\Result02", D3DXVECTOR3(-440.0f - 700.0f, 400.0f, 200.0f));
+	//LoadBlock("data\\TXT\\Result02", D3DXVECTOR3(-440.0f + 700.0f, 400.0f, 200.0f));
 
-	m_NormalScore = CScore::Create();
-	m_NormalScore->SetPos(D3DXVECTOR3(m_NormalScorePosX + 150.0f, 250.0f, 0.0f));
-	m_NormalScore->SetScore(CManager::GetInstance()->GetEndScore());
+	//m_pRanking = CRanking::Create();
 
-	m_MaxConbo = CScore::Create();
-	m_MaxConbo->SetPos(D3DXVECTOR3(m_MaxConboPosX + 150.0f, 350.0f, 0.0f));
-	m_MaxConbo->SetScore(CManager::GetInstance()->GetEndCombo() * 1000);
+	m_pResult = CObject2D::Create();
+	m_pResult->SetPos(D3DXVECTOR3(640.0f, 150.0f, 0.0f));
+	m_pResult->SetWight(500.0f);
+	m_pResult->SetHeight(300.f);
+	m_pResult->SetTexture("data\\TEXTURE\\RESULT_TEXT.png");
 
-	m_MaxFall = CScore::Create();
-	m_MaxFall->SetPos(D3DXVECTOR3(m_MaxFallPosX + 150.0f, 450.0f, 0.0f));
-	m_MaxFall->SetScore((CManager::GetInstance()->GetEndFall() / 60) * 1000);
+	//m_NormalText = CObject2D::Create();
+	//m_NormalText->SetPos(D3DXVECTOR3(640.0f, 250.0f, 0.0f));
+	//m_NormalText->SetWight(400.0f);
+	//m_NormalText->SetHeight(150.0f);
+	//m_NormalText->SetTexture("data\\TEXTURE\\NormalScore.png");
 
-	m_Depth = CScore::Create();
-	m_Depth->SetPos(D3DXVECTOR3(m_DepthPosX + 150.0f, 550.0f, 0.0f));
-	m_Depth->SetScore((int)(CManager::GetInstance()->GetEndDepth()));
+	m_DeathText = CObject2D::Create();
+	m_DeathText->SetPos(D3DXVECTOR3(640.0f, 450.0f, 0.0f));
+	m_DeathText->SetWight(700.0f);
+	m_DeathText->SetHeight(500.0f);
+	m_DeathText->SetTexture("data\\TEXTURE\\DeathCount.png");
 
-	m_TotalScore = CScore::Create();
-	m_TotalScore->SetPos(D3DXVECTOR3(m_TotalScorePosX + 150.0f, 670.0f, 0.0f));
-	m_TotalScore->SetScore(0);
+	m_DeathScore = CScore::Create();
+	m_DeathScore->SetPos(D3DXVECTOR3(500.0f, 420.0f, 0.0f));
+	m_DeathScore->SetScore(CManager::GetInstance()->GetEndScore());
 
-	m_NormalScoreText = CObject2D::Create();
-	m_NormalScoreText->SetPos(D3DXVECTOR3(m_NormalScorePosX, 250.0f, 0.0f));
-	m_NormalScoreText->SetWight(400.0f);
-	m_NormalScoreText->SetHeight(150.0f);
-	m_NormalScoreText->SetTexture("data\\TEXTURE\\NormalScore.png");
+	//m_MaxConbo = CScore::Create();
+	//m_MaxConbo->SetPos(D3DXVECTOR3(m_MaxConboPosX + 150.0f, 350.0f, 0.0f));
+	//m_MaxConbo->SetScore(CManager::GetInstance()->GetEndCombo() * 1000);
 
-	m_MaxConboText = CObject2D::Create();
-	m_MaxConboText->SetPos(D3DXVECTOR3(m_MaxConboPosX, 350.0f, 0.0f));
-	m_MaxConboText->SetWight(400.0f);
-	m_MaxConboText->SetHeight(150.0f);
-	m_MaxConboText->SetTexture("data\\TEXTURE\\ComboScore.png");
+	//m_MaxFall = CScore::Create();
+	//m_MaxFall->SetPos(D3DXVECTOR3(m_MaxFallPosX + 150.0f, 450.0f, 0.0f));
+	//m_MaxFall->SetScore((CManager::GetInstance()->GetEndFall() / 60) * 1000);
 
-	m_MaxFallText = CObject2D::Create();
-	m_MaxFallText->SetPos(D3DXVECTOR3(m_MaxFallPosX, 450.0f, 0.0f));
-	m_MaxFallText->SetWight(400.0f);
-	m_MaxFallText->SetHeight(150.0f);
-	m_MaxFallText->SetTexture("data\\TEXTURE\\FallScore.png");
+	//m_Depth = CScore::Create();
+	//m_Depth->SetPos(D3DXVECTOR3(m_DepthPosX + 150.0f, 550.0f, 0.0f));
+	//m_Depth->SetScore((int)(CManager::GetInstance()->GetEndDepth()));
 
-	m_DepthText = CObject2D::Create();
-	m_DepthText->SetPos(D3DXVECTOR3(m_DepthPosX, 550.0f, 0.0f));
-	m_DepthText->SetWight(400.0f);
-	m_DepthText->SetHeight(150.0f);
-	m_DepthText->SetTexture("data\\TEXTURE\\DepthScore.png");
+	//m_TotalScore = CScore::Create();
+	//m_TotalScore->SetPos(D3DXVECTOR3(m_TotalScorePosX + 150.0f, 670.0f, 0.0f));
+	//m_TotalScore->SetScore(0);
 
-	m_TotalScoreText = CObject2D::Create();
-	m_TotalScoreText->SetPos(D3DXVECTOR3(m_TotalScorePosX, 670.0f, 0.0f));
-	m_TotalScoreText->SetWight(400.0f);
-	m_TotalScoreText->SetHeight(150.0f);
-	m_TotalScoreText->SetTexture("data\\TEXTURE\\TotalScore.png");
+	//m_MaxConboText = CObject2D::Create();
+	//m_MaxConboText->SetPos(D3DXVECTOR3(m_MaxConboPosX, 350.0f, 0.0f));
+	//m_MaxConboText->SetWight(400.0f);
+	//m_MaxConboText->SetHeight(150.0f);
+	//m_MaxConboText->SetTexture("data\\TEXTURE\\ComboScore.png");
 
-	m_RankText = CObject2D::Create();
-	m_RankText->SetPos(D3DXVECTOR3(RankingPosX, 670.0f, 0.0f));
-	m_RankText->SetWight(220.0f);
-	m_RankText->SetHeight(450.0f);
-	m_RankText->SetTexture("data\\TEXTURE\\RANKING_TEXT.png");
+	//m_MaxFallText = CObject2D::Create();
+	//m_MaxFallText->SetPos(D3DXVECTOR3(m_MaxFallPosX, 450.0f, 0.0f));
+	//m_MaxFallText->SetWight(400.0f);
+	//m_MaxFallText->SetHeight(150.0f);
+	//m_MaxFallText->SetTexture("data\\TEXTURE\\FallScore.png");
 
-	m_ResultText = CObject2D::Create();
-	m_ResultText->SetPos(D3DXVECTOR3(640.0f, 100.0f, 0.0f));
-	m_ResultText->SetWight(600.0f);
-	m_ResultText->SetHeight(420.0f);
-	m_ResultText->SetTexture("data\\TEXTURE\\RESULT_TEXT.png");
+	//m_DepthText = CObject2D::Create();
+	//m_DepthText->SetPos(D3DXVECTOR3(m_DepthPosX, 550.0f, 0.0f));
+	//m_DepthText->SetWight(400.0f);
+	//m_DepthText->SetHeight(150.0f);
+	//m_DepthText->SetTexture("data\\TEXTURE\\DepthScore.png");
 
-	m_RankingText = CObject2D::Create();
-	m_RankingText->SetPos(D3DXVECTOR3(RankingPosX, 100.0f, 0.0f));
-	m_RankingText->SetWight(700.0f);
-	m_RankingText->SetHeight(400.0f);
-	m_RankingText->SetTexture("data\\TEXTURE\\RANKING_TEXT01.png");
+	//m_TotalScoreText = CObject2D::Create();
+	//m_TotalScoreText->SetPos(D3DXVECTOR3(m_TotalScorePosX, 670.0f, 0.0f));
+	//m_TotalScoreText->SetWight(400.0f);
+	//m_TotalScoreText->SetHeight(150.0f);
+	//m_TotalScoreText->SetTexture("data\\TEXTURE\\TotalScore.png");
+
+	//m_RankText = CObject2D::Create();
+	//m_RankText->SetPos(D3DXVECTOR3(RankingPosX, 670.0f, 0.0f));
+	//m_RankText->SetWight(220.0f);
+	//m_RankText->SetHeight(450.0f);
+	//m_RankText->SetTexture("data\\TEXTURE\\RANKING_TEXT.png");
+
+	//m_ResultText = CObject2D::Create();
+	//m_ResultText->SetPos(D3DXVECTOR3(640.0f, 100.0f, 0.0f));
+	//m_ResultText->SetWight(600.0f);
+	//m_ResultText->SetHeight(420.0f);
+	//m_ResultText->SetTexture("data\\TEXTURE\\RESULT_TEXT.png");
+
+	//m_RankingText = CObject2D::Create();
+	//m_RankingText->SetPos(D3DXVECTOR3(RankingPosX, 100.0f, 0.0f));
+	//m_RankingText->SetWight(700.0f);
+	//m_RankingText->SetHeight(400.0f);
+	//m_RankingText->SetTexture("data\\TEXTURE\\RANKING_TEXT01.png");
 
 	//m_pResult->SetIdx(pTexture->Regist("data\\TEXTURE\\Result.png"));
 
@@ -190,197 +162,21 @@ void CResult::Uninit(void)
 //====================================================================
 void CResult::Update(void)
 {
-	switch (m_AddScoreCount)
+	if (m_AddScoreCount < m_AddTotalScore)
 	{
-	case 0:
-		if (m_NormalScorePosX > SCORE_POSX)
-		{
-			m_NormalScorePosX = SCORE_POSX;
-			m_AddScoreCount++;
-		}
-		else if(m_NormalScorePosX < SCORE_POSX)
-		{
-			m_NormalScorePosX += SCORE_MOVEX;
-		}
-		break;
-	case 1:
-		if (m_MaxConboPosX > SCORE_POSX)
-		{
-			m_MaxConboPosX = SCORE_POSX;
-			m_AddScoreCount++;
-		}
-		else if (m_MaxConboPosX < SCORE_POSX)
-		{
-			m_MaxConboPosX += SCORE_MOVEX;
-		}
-		break;
-	case 2:
-		if (m_MaxFallPosX > SCORE_POSX)
-		{
-			m_MaxFallPosX = SCORE_POSX;
-			m_AddScoreCount++;
-		}
-		else if (m_MaxFallPosX < SCORE_POSX)
-		{
-			m_MaxFallPosX += SCORE_MOVEX;
-		}
-		break;
-	case 3:
-		if (m_DepthPosX > SCORE_POSX)
-		{
-			m_DepthPosX = SCORE_POSX;
-			m_AddScoreCount++;
-		}
-		else if (m_DepthPosX < SCORE_POSX)
-		{
-			m_DepthPosX += SCORE_MOVEX;
-		}
-		break;
-	case 5:
-		if (m_NormalScorePosX < -1000.0f)
-		{
-			m_NormalScorePosX = -1000.0f;
-		}
-		else if (m_NormalScorePosX > -1000.0f)
-		{
-			m_NormalScorePosX -= SCORE_MOVEX;
-			m_MaxConboPosX -= SCORE_MOVEX;
-			m_MaxFallPosX -= SCORE_MOVEX;
-			m_DepthPosX -= SCORE_MOVEX;
-			m_ResultPosX -= SCORE_MOVEX;
-		}
-
-		if (RankingPosX < 500.0f)
-		{
-			RankingPosX = 500.0f;
-			m_AddScoreCount++;
-		}
-		else if (RankingPosX > 500.0f)
-		{
-			RankingPosX -= SCORE_MOVEX;
-		}
-		break;
+		m_AddScoreCount += 1;
+	}
+	else
+	{
+		m_AddScoreCount = m_AddTotalScore;
 	}
 
-	switch (m_AddScoreCount)
+	m_DeathScore->SetScore(m_AddScoreCount);
+
+	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) == true)
 	{
-	case 0:
-		if (m_AddTotalScore > m_NormalScore->GetScore())
-		{
-			m_AddTotalScore = m_NormalScore->GetScore();
-		}
-		else if (m_AddTotalScore < m_NormalScore->GetScore())
-		{
-			m_AddTotalScore += 507;
-		}
-		break;
-	case 1:
-		if (m_AddTotalScore > m_NormalScore->GetScore() + m_MaxConbo->GetScore())
-		{
-			m_AddTotalScore = m_NormalScore->GetScore() + m_MaxConbo->GetScore();
-		}
-		else if (m_AddTotalScore < m_NormalScore->GetScore() + m_MaxConbo->GetScore())
-		{
-			m_AddTotalScore += 507;
-		}
-		break;
-	case 2:
-		if (m_AddTotalScore > m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore())
-		{
-			m_AddTotalScore = m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore();
-		}
-		else if (m_AddTotalScore < m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore())
-		{
-			m_AddTotalScore += 507;
-		}
-		break;
-	case 3:
-		if (m_AddTotalScore > m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore() + m_Depth->GetScore())
-		{
-			m_AddTotalScore = m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore() + m_Depth->GetScore();
-		}
-		else if (m_AddTotalScore < m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore() + m_Depth->GetScore())
-		{
-			m_AddTotalScore += 507;
-		}
-		break;
-	default:
-		if (m_AddTotalScore > m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore() + m_Depth->GetScore())
-		{
-			m_AddTotalScore = m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore() + m_Depth->GetScore();
-		}
-		else if (m_AddTotalScore < m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore() + m_Depth->GetScore())
-		{
-			m_AddTotalScore += 507;
-		}
-		break;
+		CFade::SetFade(CScene::MODE_TITLE);
 	}
-	m_TotalScore->SetScore(m_AddTotalScore);
-
-	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) == true ||
-		CManager::GetInstance()->GetInputJoyPad()->GetTrigger(CInputJoypad::BUTTON_A, 0) == true ||
-		CManager::GetInstance()->GetInputJoyPad()->GetTrigger(CInputJoypad::BUTTON_B, 0) == true)
-	{
-		switch (m_AddScoreCount)
-		{
-		case 0:
-			m_AddTotalScore = m_NormalScore->GetScore();
-			m_NormalScorePosX = SCORE_POSX;
-			m_AddScoreCount++;
-			break;
-		case 1:
-			m_MaxConboPosX = SCORE_POSX;
-			m_AddScoreCount++;
-			m_AddTotalScore = m_NormalScore->GetScore() + m_MaxConbo->GetScore();
-			break;
-		case 2:
-			m_MaxFallPosX = SCORE_POSX;
-			m_AddScoreCount++;
-			m_AddTotalScore = m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore();
-			break;
-		case 3:
-			m_DepthPosX = SCORE_POSX;
-			m_AddScoreCount++;
-			m_AddTotalScore = m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore() + m_Depth->GetScore();
-			break;
-		case 4:
-			m_AddScoreCount++;
-			m_AddTotalScore = m_NormalScore->GetScore() + m_MaxConbo->GetScore() + m_MaxFall->GetScore() + m_Depth->GetScore();
-			m_pRanking->SetRanking(m_AddTotalScore);
-			break;
-		case 5:
-			m_NormalScorePosX = -1000.0f;
-			m_MaxConboPosX = -1000.0f;
-			m_MaxFallPosX = -1000.0f;
-			m_DepthPosX = -1000.0f;
-			m_ResultPosX = -1000.0f;
-			RankingPosX = 500.0f;
-			m_AddScoreCount++;
-			break;
-		default:
-			CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_ENTER_PUSH);
-			CRanking::SaveRanking();
-			CFade::SetFade(CScene::MODE_TITLE);
-			break;
-		}
-	}
-
-	//スコア情報の位置設定
-	m_NormalScore->SetPos(D3DXVECTOR3(m_NormalScorePosX + 150.0f, 250.0f, 0.0f));
-	m_MaxConbo->SetPos(D3DXVECTOR3(m_MaxConboPosX + 150.0f, 350.0f, 0.0f));
-	m_MaxFall->SetPos(D3DXVECTOR3(m_MaxFallPosX + 150.0f, 450.0f, 0.0f));
-	m_Depth->SetPos(D3DXVECTOR3(m_DepthPosX + 150.0f, 550.0f, 0.0f));
-	m_TotalScore->SetPos(D3DXVECTOR3(m_TotalScorePosX + 150.0f, 670.0f, 0.0f));
-	m_NormalScoreText->SetPos(D3DXVECTOR3(m_NormalScorePosX, 250.0f, 0.0f));
-	m_MaxConboText->SetPos(D3DXVECTOR3(m_MaxConboPosX - 80.0f, 350.0f, 0.0f));
-	m_MaxFallText->SetPos(D3DXVECTOR3(m_MaxFallPosX - 90.0f, 450.0f, 0.0f));
-	m_DepthText->SetPos(D3DXVECTOR3(m_DepthPosX - 90.0f, 550.0f, 0.0f));
-	m_TotalScoreText->SetPos(D3DXVECTOR3(m_TotalScorePosX, 670.0f, 0.0f));
-	m_ResultText->SetPos(D3DXVECTOR3(m_ResultPosX, 100.0f, 0.0f));
-
-	m_pRanking->SetPos(D3DXVECTOR3(RankingPosX - 40.0f, 200.0f, 0.0f));
-	m_RankText->SetPos(D3DXVECTOR3(RankingPosX - 150.0f, 370.0f, 0.0f));
-	m_RankingText->SetPos(D3DXVECTOR3(RankingPosX + 100.0f, 100.0f, 0.0f));
 }
 
 //====================================================================

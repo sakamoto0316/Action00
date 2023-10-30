@@ -12,7 +12,7 @@
 
 #define SET_BLOCK_WIGHT (20)
 #define SET_BLOCK_HEIGHT (25)
-#define DATA_NAME ("data\\TXT\\ALLMap")	//スタートメッセージがあるかどうかの確認
+#define DATA_NAME ("data\\TXT\\ShortMap")	//スタートメッセージがあるかどうかの確認
 
 //前方宣言
 class CMapBlock;

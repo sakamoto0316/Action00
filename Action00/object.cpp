@@ -116,21 +116,11 @@ void CObject::UpdateAll(void)
 							pObject->Update();
 						}
 					}
-					else if (CManager::GetInstance()->GetStop() == true)
-					{
-						if (pObject->GetType() == TYPE_TUTORIALUI ||
-							pObject->GetType() == TYPE_EFFECT ||
-							pObject->GetType() == TYPE_EXPLOSION ||
-							pObject->GetType() == TYPE_FG ||
-							pObject->GetType() == TYPE_BOSSLEVEL)
-						{
-							//更新処理
-							pObject->Update();
-						}
-					}
 					else if (CManager::GetInstance()->GetPause() == true)
 					{
-						if (pObject->GetType() == TYPE_OBJECT2D)
+						if (pObject->GetType() == TYPE_TUTORIALUI ||
+							pObject->GetType() == TYPE_EXPLOSION ||
+							pObject->GetType() == TYPE_FG)
 						{
 							//更新処理
 							pObject->Update();

@@ -32,6 +32,10 @@ public:
 	D3DXVECTOR3 GetStartPos(void) { return m_Startpos; }
 	void SetStartRot(D3DXVECTOR3 rot) { m_Startrot = rot; }
 	D3DXVECTOR3 GetStartRot(void) { return m_Startrot; }
+	void SetColor(D3DCOLORVALUE Color) { m_Color = Color; }
+	D3DCOLORVALUE GetColor(void) { return m_Color; }
+	void SetColorChange(bool Set) { m_bColorChange = Set; }
+	bool GetColorChange(void) { return m_bColorChange; }
 
 
 private:
@@ -46,6 +50,8 @@ private:
 	D3DXVECTOR3 m_rot;				//向き
 	D3DXMATRIX m_mtxWorld;			//ワールドマトリックス
 	CModel *m_pParent;				//親モデルへのポインタ
+	D3DCOLORVALUE m_Color;
+	bool m_bColorChange;
 
 };
 

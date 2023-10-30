@@ -263,6 +263,26 @@ void CObject2D::SetAnim(D3DXVECTOR2 Tex)
 }
 
 //====================================================================
+//テクスチャ座標の設定
+//====================================================================
+void CObject2D::SetScroll(D3DXVECTOR2 Tex)
+{
+	VERTEX_2D*pVtx;	//頂点ポインタを所得
+
+					//頂点バッファをロックし、両店情報へのポインタを所得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	//テクスチャ座標の設定
+	pVtx[0].tex = D3DXVECTOR2(Tex.x, Tex.y);
+	pVtx[1].tex = D3DXVECTOR2(Tex.x + 1.0f, Tex.y);
+	pVtx[2].tex = D3DXVECTOR2(Tex.x, Tex.y + 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(Tex.x + 1.0f, Tex.y + 1.0f);
+
+	//頂点バッファをアンロックする
+	m_pVtxBuff->Unlock();
+}
+
+//====================================================================
 //頂点カラーの設定
 //====================================================================
 void CObject2D::SetColor(D3DXCOLOR col)
