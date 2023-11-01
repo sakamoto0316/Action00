@@ -31,6 +31,12 @@ public:
 		SOUND_LABEL_SE_PLAYER_JUMP,			// プレイヤーのジャンプ音
 		SOUND_LABEL_SE_WARNING,				// 警告音
 		SOUND_LABEL_SE_LEVELUP,				// レベルアップ音
+		SOUND_LABEL_SE_BOSSSPAWN,			// ボス出現音
+		SOUND_LABEL_SE_BOSSSHOT,			// ボスショット音
+		SOUND_LABEL_SE_BOSSWALL,			// ボス着地音
+		SOUND_LABEL_SE_BOSSRESPAWN,			// ボス復活音
+		SOUND_LABEL_SE_BOSSNODAMAGE,		// ボス無敵状態
+		SOUND_LABEL_SE_BOSSFALL,			// ボス落下音
 		SOUND_LABEL_MAX,
 	} SOUND_LABEL;
 

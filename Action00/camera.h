@@ -20,6 +20,8 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void SetCamera(void);
+	void SetCameraPos(D3DXVECTOR3 Pos) { m_posV = Pos; m_posR = Pos; }
+	D3DXVECTOR3 GetCameraPos(void) { return m_posR;}
 	void SetCameraPosY(float PosY) { m_EventPosY = PosY; }
 	void ResetCamera(void);
 	void SetBib(bool Set) { m_bBib = Set; }
@@ -28,6 +30,7 @@ public:
 private:
 	D3DXMATRIX m_mtxView;		//ビューマトリックス
 	D3DXMATRIX m_mtxProjection;	//プロジェクションマトリックス
+	D3DXVECTOR3 m_move;			//移動量
 	D3DXVECTOR3 m_posV;			//視点
 	D3DXVECTOR3 m_posR;			//注視点
 	D3DXVECTOR3 m_vecU;			//上方向ベクトル

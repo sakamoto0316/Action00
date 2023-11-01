@@ -35,6 +35,7 @@ public:
 	void SetLife(int Life) { m_nLife = Life; m_nLifeMax = Life; }
 	int GetLife(void) { return m_nLife; }
 	int GetIdx(void) { return m_nIdxTexture; }
+	void SetTexName(char *Name) { m_cTexName = Name; }
 
 private:
 	int m_nIdxTexture;						//テクスチャの番号
@@ -45,5 +46,6 @@ private:
 	D3DXCOLOR m_col;						//色
 	int m_nLifeMax;							//寿命の最大値
 	int m_nLife;							//寿命
+	char *m_cTexName;
 };
 #endif

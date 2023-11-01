@@ -8,7 +8,7 @@ CSound::SOUNDINFO CSound::m_aSoundInfo[SOUND_LABEL_MAX] =
 	{ "data/BGM/Result.wav", -1 },				// リザルトBGM
 	{ "data/SE/Shot.wav", 0 },					// 通常攻撃
 	{ "data/SE/Shot0.wav", 0 },					// 弾切れの時の音
-	{ "data/SE/BlockHit.wav", 0 },				// ブロック破壊
+	{ "data/SE/Boss_Attack_wall.wav", 0 },				// ブロック破壊
 	{ "data/SE/PlayerDamage.wav", 0 },			// プレイヤーダメージ
 	{ "data/SE/EnemyDamage.wav", 0 },			// 敵ダメージ
 	{ "data/SE/Ult.wav", 0 },					// 必殺技
@@ -19,6 +19,12 @@ CSound::SOUNDINFO CSound::m_aSoundInfo[SOUND_LABEL_MAX] =
 	{ "data/SE/PlayerJump.wav", 0 },			// プレイヤーのジャンプ音
 	{ "data/SE/Warning.wav", 0 },				// 警告音
 	{ "data/SE/LevelUP.wav", 0 },				// レベルアップ音
+	{ "data/SE/BossSpawn.wav", 0 },				// ボス出現音
+	{ "data/SE/Boss_Attack_shot.wav", 0 },		// ボスショット音
+	{ "data/SE/BlockHit.wav", 0 },				// ボス着地音
+	{ "data/SE/Boss_Attack_go.wav", 0 },		// ボス復活音
+	{ "data/SE/BossNoDamage.wav", 0 },			// ボス無敵状態
+	{ "data/SE/explosion000.wav", 0 },			// ボス落下音
 };
 
 //=============================================================================

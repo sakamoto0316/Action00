@@ -30,6 +30,7 @@ CCamera::CCamera()
 {
 	m_bBib = false;
 	m_fBibPowor = 0.0f;
+	m_move = D3DXVECTOR3(10.0f, 0.0f, 0.0f);
 	m_PlayerPos = INITVECTOR3;
 	m_DelCameraPos = INITVECTOR3;
 	ResetCamera();
@@ -180,10 +181,11 @@ void CCamera::Update(void)
 	//}
 #endif
 
-	CPlayerLevel *pPlayer = CGame::GetPlayerLevel();
-
 	if (CManager::GetInstance()->GetScene()->GetMode() == CScene::MODE_GAME)
 	{
+
+	CPlayerLevel *pPlayer = CGame::GetPlayerLevel();
+
 		if (pPlayer->GetState() == CPlayerLevel::STATE_NORMAL || pPlayer->GetState() == CPlayerLevel::STATE_NODAMAGE)
 		{
 			m_PlayerPos = pPlayer->GetPos();
@@ -232,12 +234,21 @@ void CCamera::Update(void)
 		}
 
 	}
+	else if (CManager::GetInstance()->GetScene()->GetMode() == CScene::MODE_RESULT)
+	{
+		m_posR += m_move;
+
+		//視点の情報を出力する
+		m_posV.x = m_posR.x - 200.0f + sinf(m_rot.y) * -cosf(m_rot.x) * m_CameraDistance * 1.5f;
+		m_posV.y = m_posR.y + sinf(-m_rot.x) * m_CameraDistance * 1.5f;
+		m_posV.z = m_posR.z + cosf(m_rot.y) * -cosf(m_rot.x) * m_CameraDistance * 1.5f;
+	}
 	else
 	{
-			//視点の情報を出力する
-			m_posV.x = m_posR.x + sinf(m_rot.y) * -cosf(m_rot.x) * m_CameraDistance;
-			m_posV.y = m_posR.y + sinf(-m_rot.x) * m_CameraDistance;
-			m_posV.z = m_posR.z + cosf(m_rot.y) * -cosf(m_rot.x) * m_CameraDistance;
+		//視点の情報を出力する
+		m_posV.x = m_posR.x + sinf(m_rot.y) * -cosf(m_rot.x) * m_CameraDistance;
+		m_posV.y = m_posR.y + sinf(-m_rot.x) * m_CameraDistance;
+		m_posV.z = m_posR.z + cosf(m_rot.y) * -cosf(m_rot.x) * m_CameraDistance;
 	}
 
 	//if (m_bBib == true)

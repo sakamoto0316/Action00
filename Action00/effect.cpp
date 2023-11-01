@@ -26,6 +26,7 @@ CEffect::CEffect(int nPriority) : CObjectBillboard(nPriority)
 	m_nLife = 10;
 	m_nLifeMax = m_nLife;
 	m_fDel = SMALLER;
+	m_cTexName = "";
 }
 
 //====================================================================
@@ -65,6 +66,7 @@ HRESULT CEffect::Init(void)
 {
 	CTexture *pTexture = CManager::GetInstance()->GetTexture();;
 	m_nIdxTexture = pTexture->Regist("data\\TEXTURE\\Effect000.jpg");
+	m_cTexName = "data\\TEXTURE\\Effect000.jpg";
 
 	SetType(CObject::TYPE_EFFECT);
 
@@ -109,6 +111,9 @@ void CEffect::Update(void)
 
 	//’¸“_î•ñ‚ÌXV
 	CObjectBillboard::Update();
+
+	CTexture *pTexture = CManager::GetInstance()->GetTexture();;
+	m_nIdxTexture = pTexture->Regist(m_cTexName);
 }
 
 //====================================================================

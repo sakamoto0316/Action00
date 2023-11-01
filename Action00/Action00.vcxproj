@@ -153,6 +153,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlockDeath.cpp" />
+    <ClCompile Include="BlockReSpawn.cpp" />
     <ClCompile Include="BlockUI.cpp" />
     <ClCompile Include="bosslevel.cpp" />
     <ClCompile Include="Break.cpp" />
@@ -235,6 +237,8 @@
     <ClCompile Include="Xmodel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlockDeath.h" />
+    <ClInclude Include="BlockReSpawn.h" />
     <ClInclude Include="BlockUI.h" />
     <ClInclude Include="bosslevel.h" />
     <ClInclude Include="Break.h" />

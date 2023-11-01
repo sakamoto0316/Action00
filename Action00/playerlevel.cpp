@@ -24,6 +24,7 @@
 #include "MapBlock.h"
 #include "MapPitFloor.h"
 #include "bosslevel.h"
+#include "BlockDeath.h"
 
 #define PLAYER_SPEED (10.0f)		//プレイヤーの速さ
 #define PLAYER_JAMPPOWER (15.0f)	//プレイヤーのジャンプ力
@@ -158,6 +159,7 @@ void CPlayerLevel::Update(void)
 				m_nJump = 1;
 			}
 		}
+
 		//移動処理
 		Move();
 
@@ -442,6 +444,18 @@ void CPlayerLevel::HitDamage(void)
 {
 	if (m_State == STATE_NORMAL)
 	{
+		for (int nCnt = 0; nCnt < 10; nCnt++)
+		{
+			int nRandX = rand() % 601;
+			float fRandX = nRandX * 0.01f;
+			int nRandY = rand() % 601;
+			float fRandY = nRandY * 0.01f;
+
+			CBlockDeath *pBlock = CBlockDeath::Create();
+			pBlock->SetPos(D3DXVECTOR3(m_pos.x, m_pos.y + nCnt * 15.0f, m_pos.z));
+			pBlock->SetMove(D3DXVECTOR3(m_move.x + fRandX - 3.0f, m_move.y + fRandY - 3.0f, m_move.z + fRandX - 3.0f));
+		}
+
 		CEffect *pEffect = CEffect::Create();
 		pEffect->SetPos(m_pos);
 		pEffect->SetRadius(500.0f);

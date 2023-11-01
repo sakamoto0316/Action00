@@ -21,8 +21,14 @@
 #include "MapNeedleLR.h"
 #include "MapCannon.h"
 #include "Edit.h"
+#include "particle.h"
+#include "DirectionParticle.h"
+#include "object2D.h"
+#include "sound.h"
+#include "LifeGauge.h"
 
 #define COLLISION_BOSS (50.0f) //ボスの当たり判定
+#define NEEDLE_EFFECT (4.0f) //とげ攻撃のエフェクトの移動速度倍率
 
 //====================================================================
 //コンストラクタ
@@ -42,9 +48,16 @@ CBossLevel::CBossLevel()
 	m_BulletCount = 0;
 	m_NeedleCount = 0;
 	m_NeedleSet = 0;
-	m_State = STATE_NORMAL;
+	m_State = STATE_SET;
+	m_nStateCount = 120;
 	m_FallCount = 0;
 	m_HitCount = 0;
+	m_pLife = NULL;
+	m_NeedlePos = INITVECTOR3;
+	m_nNeedleEffect = 0;
+
+	m_pLifeGauge = NULL;
+	m_pLifeFG = NULL;
 }
 
 //====================================================================
@@ -82,6 +95,30 @@ CBossLevel *CBossLevel::Create()
 //====================================================================
 HRESULT CBossLevel::Init(void)
 {
+	m_pLifeFG = CLifeGauge::Create(false, false);
+	m_pLifeFG->SetPos(D3DXVECTOR3(240.0f, 650.0f, 0.0f));
+	m_pLifeFG->SetWight(800.0f);
+	m_pLifeFG->SetHeight(50.0f);
+	m_pLifeFG->SetGaugeMax(3);
+	m_pLifeFG->SetGauge(3);
+	m_pLifeFG->SetColor(D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.5f));
+
+	m_pLifeGauge = CLifeGauge::Create(false, false);
+	m_pLifeGauge->SetPos(D3DXVECTOR3(240.0f, 650.0f, 0.0f));
+	m_pLifeGauge->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	m_pLifeGauge->SetWight(800.0f);
+	m_pLifeGauge->SetHeight(50.0f);
+	m_pLifeGauge->SetGaugeMax(3);
+	m_pLifeGauge->SetGauge(3);
+
+	m_pLife = CObject2D::Create();
+	m_pLife->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
+	m_pLife->SetType(CObject::TYPE_TUTORIALUI);
+	m_pLife->SetTexture("data\\TEXTURE\\Test.jpg");
+	m_pLife->SetPos(D3DXVECTOR3(0.0f, 500.0f, 0.0f));
+	m_pLife->SetWight(50.0f);
+	m_pLife->SetHeight(50.0f);
+
 	//位置の設定
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, -50.0f);
 
@@ -140,110 +177,179 @@ void CBossLevel::SetNULL(void)
 //====================================================================
 void CBossLevel::Update(void)
 {
-	//過去の位置を記録する
-	m_posOld = m_pos;
-
-	//重力
-	m_move.y -= 0.98f;
-
-	//減衰係数
-	m_move.x = m_move.x * 0.5f;
-	if (m_move.x <= 0.0001f && m_move.x >= -0.0001f)
+	if (m_State == STATE_SET)
 	{
-		m_move.x = 0.0f;
-	}
-
-	if (m_bJump == false)
-	{
-		Rot();
-	}
-
-	if (m_bJump == true)
-	{
-		D3DXVECTOR3 PlayerPos = CGame::GetPlayerLevel()->GetPos();
-		if (m_bRight == false)
+		if (m_nStateCount % 2 == 0)
 		{
-			if (m_bMiniJump == true)
-			{
-				m_move.x += -3.0f;
-			}
-			else
-			{
-				m_move.x += -7.5f;
-			}
+			//パーティクルの生成
+			CDirectionParticle::Create
+			(
+				D3DXVECTOR3(m_pos.x, m_pos.y + 80.0f, m_pos.z),
+				D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
+				300.0f,
+				20,
+				60,
+				1
+			);
 		}
-		else
-		{
-			if (m_bMiniJump == true)
-			{
-				m_move.x += 3.0f;
-			}
-			else
-			{
-				m_move.x += 7.5f;
-			}
-		}
-	}
-
-	if (m_bRoundATK == true)
-	{
-		AtkNoDamage();
 	}
 	else
 	{
-		if (m_State == STATE_NORMAL)
+		//過去の位置を記録する
+		m_posOld = m_pos;
+
+		//重力
+		m_move.y -= 0.98f;
+
+		//減衰係数
+		m_move.x = m_move.x * 0.5f;
+		if (m_move.x <= 0.0001f && m_move.x >= -0.0001f)
 		{
-			//攻撃パターン
-			AttackPattern();
+			m_move.x = 0.0f;
+		}
+
+		if (m_bJump == false)
+		{
+			Rot();
+		}
+
+		if (m_bJump == true)
+		{
+			D3DXVECTOR3 PlayerPos = CGame::GetPlayerLevel()->GetPos();
+			if (m_bRight == false)
+			{
+				if (m_bMiniJump == true)
+				{
+					m_move.x += -3.0f;
+				}
+				else
+				{
+					m_move.x += -7.5f;
+				}
+			}
+			else
+			{
+				if (m_bMiniJump == true)
+				{
+					m_move.x += 3.0f;
+				}
+				else
+				{
+					m_move.x += 7.5f;
+				}
+			}
+		}
+
+		if (m_bRoundATK == true)
+		{
+			AtkNoDamage();
+		}
+		else
+		{
+			if (m_State == STATE_NORMAL)
+			{
+				//攻撃パターン
+				AttackPattern();
+			}
+		}
+
+		//弾生成攻撃
+		if (m_bBullet == true)
+		{
+			SetBullet();
+		}
+
+		//とげ生成攻撃
+		if (m_bNeedle == true)
+		{
+			SetNeedle();
+		}
+
+		//X軸の位置更新
+		m_pos.x += m_move.x;
+
+		//当たり判定
+		CollisionObject(&m_pos, true);
+
+		//Y軸の位置更新
+		m_pos.y += m_move.y;
+
+		//当たり判定
+		CollisionObject(&m_pos, false);
+
+		//Z軸の位置更新
+		m_pos.z += m_move.z;
+
+		if (m_pos.y <= -100.0f && m_State != STATE_WAIT)
+		{
+			m_State = STATE_WAIT;
+			m_nStateCount = 120;
+			m_FallCount++;
+
+			if (m_FallCount == 1)
+			{
+				m_pLifeGauge->SetGauge(2);
+				CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_BOSSFALL);
+			}
+			else if (m_FallCount == 2)
+			{
+				m_pLifeGauge->SetGauge(1);
+				CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_BOSSFALL);
+			}
+			else if (m_FallCount == 3)
+			{
+				m_pLifeGauge->SetGauge(0);
+				CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_BOSSFALL);
+			}
+
+			if (m_FallCount == 3)
+			{
+				for (int nCnt = 0; nCnt < 40; nCnt++)
+				{
+					int nRand = rand() % 801;
+
+					CEffect *pEffect = CEffect::Create();
+					pEffect->SetPos(D3DXVECTOR3(m_pos.x + nCnt * 2.5f - 50.0f, 0.0f, m_pos.z));
+					pEffect->SetMove(D3DXVECTOR3(0.0f, 10.0f + nRand * 0.1f - 10.0f, 0.0f));
+					pEffect->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+					pEffect->SetRadius(50.0f);
+					pEffect->SetDel(0.0);
+					pEffect->SetLife(60);
+				}
+			}
+			else if (m_FallCount < 3)
+			{
+				for (int nCnt = 0; nCnt < 20; nCnt++)
+				{
+					int nRand = rand() % 401;
+
+					CEffect *pEffect = CEffect::Create();
+					pEffect->SetPos(D3DXVECTOR3(m_pos.x + nCnt * 5.0f - 50.0f, 0.0f, m_pos.z));
+					pEffect->SetMove(D3DXVECTOR3(0.0f, 10.0f + nRand * 0.1f - 10.0f, 0.0f));
+					pEffect->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+					pEffect->SetRadius(40.0f);
+					pEffect->SetDel(0.0);
+					pEffect->SetLife(60);
+				}
+			}
+		}
+
+		//モーションの管理
+		if (m_MotionCount > 0)
+		{
+			m_MotionCount--;
+			if (m_MotionCount == 0)
+			{
+				m_pMotion->Set(ACTION_WAIT1);
+			}
 		}
 	}
 
-	//弾生成攻撃
-	if (m_bBullet == true)
-	{
-		SetBullet();
-	}
-
-	//とげ生成攻撃
-	if (m_bNeedle == true)
-	{
-		SetNeedle();
-	}
-
-	//X軸の位置更新
-	m_pos.x += m_move.x;
-
-	//当たり判定
-	CollisionObject(&m_pos, true);
-
-	//Y軸の位置更新
-	m_pos.y += m_move.y;
-
-	//当たり判定
-	CollisionObject(&m_pos, false);
-
-	//Z軸の位置更新
-	m_pos.z += m_move.z;
-
-	if (m_pos.y <= -100.0f && m_State != STATE_WAIT)
-	{
-		m_State = STATE_WAIT;
-		m_nStateCount = 120;
-		m_FallCount++;
-	}
+	//キーボードの取得
+	CInputKeyboard *pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
 
 	//状態管理
 	StateManager();
-
-	//モーションの管理
-	if (m_MotionCount > 0)
-	{
-		m_MotionCount--;
-		if (m_MotionCount == 0)
-		{
-			m_pMotion->Set(ACTION_WAIT1);
-		}
-	}
 
 	//モーションの更新
 	m_pMotion->Update();
@@ -296,6 +402,7 @@ void CBossLevel::StateManager(void)
 						pNeedle->SetMoveSpeed(0.006f);
 					}
 				}
+				CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_BOSSRESPAWN);
 			}
 		}
 		break;
@@ -313,8 +420,16 @@ void CBossLevel::StateManager(void)
 			m_bRoundATK = true;
 			m_nNoDamageCount = 600;
 			m_MotionCount = 600;
+
+			CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_BOSSNODAMAGE);
 		}
 		break;
+
+	case STATE_SET:
+		if (m_nStateCount <= 0)
+		{
+			m_State = STATE_NORMAL;
+		}
 	}
 
 	if (m_nStateCount > 0)
@@ -333,6 +448,7 @@ void CBossLevel::AttackPattern(void)
 		m_AttackCount++;
 		if (m_AttackCount >= 120)
 		{
+			CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_WARNING);
 			m_bAttack = true;
 			int nRandAttack = rand() % 101;
 			
@@ -462,6 +578,8 @@ void CBossLevel::SetBullet(void)
 					pBullet->SetPos(D3DXVECTOR3(m_pos.x, m_pos.y + 70.0f, m_pos.z));
 					pBullet->SetMove(D3DXVECTOR3(10.0f, 0.0f, 0.0f));
 				}
+
+				CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_BOSSSHOT);
 			}
 
 			if ((m_BulletCount + 40) % 80 == 0)
@@ -478,6 +596,8 @@ void CBossLevel::SetBullet(void)
 					pBullet->SetPos(D3DXVECTOR3(m_pos.x, m_pos.y + 150.0f, m_pos.z));
 					pBullet->SetMove(D3DXVECTOR3(10.0f, 0.0f, 0.0f));
 				}
+
+				CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_BOSSSHOT);
 			}
 		}
 		if (m_BulletCount == 0)
@@ -502,6 +622,8 @@ void CBossLevel::AtkNeedle(void)
 	m_move.y = 30.0f;
 	m_bNeedle = true;
 	m_fNeedleSet = m_pos.x;
+	m_NeedlePos = m_pos;
+	m_nNeedleEffect = 0;
 
 	m_bAttack = false;
 	m_AttackCount = 0;
@@ -513,6 +635,26 @@ void CBossLevel::AtkNeedle(void)
 void CBossLevel::SetNeedle(void)
 {
 	m_NeedleCount++;
+	m_nNeedleEffect++;
+
+	if (m_nNeedleEffect >= 70)
+	{
+		for (int nCnt = 0; nCnt < 2; nCnt++)
+		{
+			CEffect *pEffect = CEffect::Create();
+			if (nCnt == 0)
+			{
+				pEffect->SetPos(D3DXVECTOR3((m_NeedlePos.x + m_nNeedleEffect * NEEDLE_EFFECT) - (70 * NEEDLE_EFFECT), 450.0f, m_NeedlePos.z));
+			}
+			else
+			{
+				pEffect->SetPos(D3DXVECTOR3((m_NeedlePos.x - m_nNeedleEffect * NEEDLE_EFFECT) + (70 * NEEDLE_EFFECT), 450.0f, m_NeedlePos.z));
+			}
+			pEffect->SetRadius(80.0f);
+			pEffect->SetDel(20.0f);
+			pEffect->SetColor(D3DXCOLOR(0.9f, 0.3f, 0.0f, 1.0f));
+		}
+	}
 
 	if (m_NeedleCount >= 70)
 	{
@@ -550,6 +692,21 @@ void CBossLevel::AtkNoDamage(void)
 	{
 		m_nNoDamageCount--;
 
+		if (m_nNoDamageCount % 5 == 0)
+		{
+			for (int nCnt = 0; nCnt < 10; nCnt++)
+			{
+				int nRand = rand() % 201;
+
+				CEffect *pEffect = CEffect::Create();
+				pEffect->SetPos(D3DXVECTOR3(m_pos.x + nRand * 1.0f - 100.0f, m_pos.y + nCnt * 20.0f, m_pos.z));
+				pEffect->SetRadius(5.0f);
+				pEffect->SetDel(-30.0);
+				pEffect->SetLife(5);
+				pEffect->SetTexName("data\\TEXTURE\\BossExplosion.png");
+			}
+		}
+
 		D3DXVECTOR3 PlayerPos = CGame::GetPlayerLevel()->GetPos();
 
 		if (PlayerPos.x < m_pos.x - 10.0f)
@@ -563,7 +720,7 @@ void CBossLevel::AtkNoDamage(void)
 
 		if (m_FallCount == 2)
 		{
-			if (m_nNoDamageCount % 80 == 0)
+			if (m_nNoDamageCount % 65 == 0)
 			{
 				m_move.y = 23.0f;
 			}
@@ -645,6 +802,7 @@ void CBossLevel::HitDamage(void)
 		m_HitCount++;
 		m_bBullet = false;
 		m_bAttack = false;
+		CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_BREAK_BLOCK);
 	}
 }
 
@@ -683,6 +841,11 @@ bool CBossLevel::CollisionObject(D3DXVECTOR3 *pos, bool bX)
 							pos->x - m_Size < Objpos.x + ObjWight
 							)
 						{//上からめり込んだ時
+							if (m_move.y <= -20.0f)
+							{
+								CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_BOSSWALL);
+							}
+
 							pos->y = Objpos.y + ObjHeight;		//ブロックのうえにたたせる
 							m_move.y = 0.0f;					//移動量を０にする
 							m_bMiniJump = false;
@@ -789,7 +952,7 @@ bool CBossLevel::Collision(D3DXVECTOR3 *pPos, D3DXVECTOR3 pPosOld, D3DXVECTOR3 *
 
 			if (m_State != STATE_NODAMAGE)
 			{
-				m_move.x = 100.0f;
+				m_move.x = 150.0f;
 				m_move.y = 10.0f;
 			}
 
@@ -809,7 +972,7 @@ bool CBossLevel::Collision(D3DXVECTOR3 *pPos, D3DXVECTOR3 pPosOld, D3DXVECTOR3 *
 
 			if (m_State != STATE_NODAMAGE)
 			{
-				m_move.x = -100.0f;
+				m_move.x = -150.0f;
 				m_move.y = 10.0f;
 			}
 
@@ -825,30 +988,33 @@ bool CBossLevel::Collision(D3DXVECTOR3 *pPos, D3DXVECTOR3 pPosOld, D3DXVECTOR3 *
 //====================================================================
 void CBossLevel::Draw(void)
 {
-	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
-	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
-
-									//ワールドマトリックスの初期化
-	D3DXMatrixIdentity(&m_mtxWorld);
-
-	//向きを反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
-
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
-
-	//位置を反映
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
-
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
-
-	//ワールドマトリックスの設定
-	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
-
-	//モデルの描画(全パーツ)
-	for (int nCntModel = 0; nCntModel < m_nNumModel; nCntModel++)
+	if (m_State != STATE_SET)
 	{
-		m_apModel[nCntModel]->Draw();
+		//デバイスの取得
+		LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+		D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
+
+										//ワールドマトリックスの初期化
+		D3DXMatrixIdentity(&m_mtxWorld);
+
+		//向きを反映
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+
+		//位置を反映
+		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+
+		//ワールドマトリックスの設定
+		pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+
+		//モデルの描画(全パーツ)
+		for (int nCntModel = 0; nCntModel < m_nNumModel; nCntModel++)
+		{
+			m_apModel[nCntModel]->Draw();
+		}
 	}
 }
 

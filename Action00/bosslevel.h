@@ -12,6 +12,8 @@
 //前方宣言
 class CModel;
 class CMotion;
+class CObject2D; 
+class CLifeGauge;
 
 //オブジェクトプレイヤークラス
 class CBossLevel : public CObject
@@ -38,6 +40,7 @@ public:
 		STATE_WAIT,
 		STATE_SPAWN,
 		STATE_DEATH,
+		STATE_SET,
 		STATE_MAX,
 	}STATE;
 
@@ -73,6 +76,8 @@ private:
 	void AtkNoDamage(void);								//無敵攻撃
 
 	D3DXVECTOR3 m_pos;		//位置
+	D3DXVECTOR3 m_NeedlePos;//位置
+	int m_nNeedleEffect;	//位置
 	float m_Size;			//大きさ
 	D3DXVECTOR3 m_posOld;	//位置
 	D3DXVECTOR3 m_move;		//移動量
@@ -99,10 +104,14 @@ private:
 	int m_FallCount;		//落下カウント
 	int m_HitCount;			//被弾カウント
 
+	CLifeGauge *m_pLifeGauge;		//体力ゲージ
+	CLifeGauge *m_pLifeFG;			//体力ゲージの前面ポリゴン
 	CModel *m_apModel[64];
 	CMotion *m_pMotion;
 	char *m_aModelName[64];
 	int m_nNumModel;
+
+	CObject2D *m_pLife;
 };
 
 #endif

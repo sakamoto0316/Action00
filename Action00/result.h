@@ -15,6 +15,7 @@ class CObject2D;
 class CRanking;
 class CScore;
 class CBreak_Block3D;
+class CEdit;
 
 //シーンクラス
 class CResult : public CScene
@@ -38,6 +39,8 @@ private:
 	static CObject2D *m_pResult;
 	static CRanking *m_pRanking;
 	static CScore *m_DeathScore;
+	static CEdit *m_pEdit;					//エディットモードのポインタ
+	static CObject2D *m_ClearText;
 	static CObject2D *m_NormalText;
 	static CObject2D *m_DeathText;
 	static bool m_Appear;

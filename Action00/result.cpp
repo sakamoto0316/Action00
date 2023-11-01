@@ -14,6 +14,8 @@
 #include "sound.h"
 #include "score.h"
 #include "break_block3D.h"
+#include "Edit.h"
+#include "camera.h"
 
 //マクロ定義
 #define START_OK ("STARTSETSTAGE")	//スタートメッセージがあるかどうかの確認
@@ -24,12 +26,14 @@
 //静的メンバ変数宣言
 CObject2D *CResult::m_pResult = NULL;
 CRanking *CResult::m_pRanking = NULL;
+CObject2D *CResult::m_ClearText = NULL;
 CObject2D *CResult::m_NormalText = NULL;
 CObject2D *CResult::m_DeathText = NULL;
 CScore *CResult::m_DeathScore = NULL;
 bool CResult::m_Appear = false;
 int CResult::m_AddScoreCount = 0;
 int CResult::m_AddTotalScore = 0;
+CEdit *CResult::m_pEdit = NULL;
 
 //====================================================================
 //コンストラクタ
@@ -64,26 +68,35 @@ HRESULT CResult::Init(void)
 	//m_pRanking = CRanking::Create();
 
 	m_pResult = CObject2D::Create();
-	m_pResult->SetPos(D3DXVECTOR3(640.0f, 150.0f, 0.0f));
-	m_pResult->SetWight(500.0f);
-	m_pResult->SetHeight(300.f);
+	m_pResult->SetPos(D3DXVECTOR3(640.0f, 50.0f, 0.0f));
+	m_pResult->SetWight(250.0f);
+	m_pResult->SetHeight(150.0f);
 	m_pResult->SetTexture("data\\TEXTURE\\RESULT_TEXT.png");
 
-	//m_NormalText = CObject2D::Create();
-	//m_NormalText->SetPos(D3DXVECTOR3(640.0f, 250.0f, 0.0f));
-	//m_NormalText->SetWight(400.0f);
-	//m_NormalText->SetHeight(150.0f);
-	//m_NormalText->SetTexture("data\\TEXTURE\\NormalScore.png");
+	m_ClearText = CObject2D::Create();
+	m_ClearText->SetPos(D3DXVECTOR3(640.0f, 200.0f, 0.0f));
+	m_ClearText->SetWight(1000.0f);
+	m_ClearText->SetHeight(400.0f);
+	m_ClearText->SetTexture("data\\TEXTURE\\STAGECLEAR.png");
 
 	m_DeathText = CObject2D::Create();
-	m_DeathText->SetPos(D3DXVECTOR3(640.0f, 450.0f, 0.0f));
+	m_DeathText->SetPos(D3DXVECTOR3(640.0f, 550.0f, 0.0f));
 	m_DeathText->SetWight(700.0f);
 	m_DeathText->SetHeight(500.0f);
 	m_DeathText->SetTexture("data\\TEXTURE\\DeathCount.png");
 
 	m_DeathScore = CScore::Create();
-	m_DeathScore->SetPos(D3DXVECTOR3(500.0f, 420.0f, 0.0f));
+	m_DeathScore->SetPos(D3DXVECTOR3(500.0f, 520.0f, 0.0f));
 	m_DeathScore->SetScore(CManager::GetInstance()->GetEndScore());
+
+	CManager::GetInstance()->GetCamera()->SetCameraPos(D3DXVECTOR3(3500.0f, 450.0f, 0.0f));
+
+	//エディットモードの生成
+	if (m_pEdit == NULL)
+	{
+		m_pEdit = CEdit::Create();
+		m_pEdit->LoadData(DATA_NAME, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	}
 
 	//m_MaxConbo = CScore::Create();
 	//m_MaxConbo->SetPos(D3DXVECTOR3(m_MaxConboPosX + 150.0f, 350.0f, 0.0f));
@@ -155,6 +168,15 @@ void CResult::Uninit(void)
 {
 	//全てのオブジェクトの破棄
 	CObject::ReleaseAll();
+
+	if (m_pEdit != NULL)
+	{
+		//エディットモードの終了処理
+		m_pEdit->Uninit();
+
+		delete m_pEdit;
+		m_pEdit = NULL;
+	}
 }
 
 //====================================================================
@@ -172,6 +194,11 @@ void CResult::Update(void)
 	}
 
 	m_DeathScore->SetScore(m_AddScoreCount);
+
+	if (CManager::GetInstance()->GetCamera()->GetCameraPos().x > 20000.0f)
+	{
+		CFade::SetFade(CScene::MODE_TITLE);
+	}
 
 	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) == true ||
 		CManager::GetInstance()->GetInputJoyPad()->GetTrigger(CInputJoypad::BUTTON_A, 0) == true)

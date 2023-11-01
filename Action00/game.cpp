@@ -343,9 +343,10 @@ void CGame::SetBossEvent(bool bSet)
 	if (bSet == true)
 	{
 		m_pBossLevel = CBossLevel::Create();
-		m_pBossLevel->SetPos(D3DXVECTOR3(20000.0f, 600.0f, 0.0f));
+		m_pBossLevel->SetPos(D3DXVECTOR3(20000.0f, 800.0f, 0.0f));
 		CManager::GetInstance()->GetSound()->StopSound();
 		CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_BGM_BOSS);
+		CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_BOSSSPAWN);
 	}
 }
 
