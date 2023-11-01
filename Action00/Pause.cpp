@@ -203,8 +203,8 @@ void CPause::Update(void)
 	if (CManager::GetInstance()->GetPause() == true)
 	{
 		if (pInputKeyboard->GetTrigger(DIK_A) == true ||
-			pInputJoypad->GetTrigger(CInputJoypad::BUTTON_UP, 0) == true ||
-			pInputJoypad->Get_LStick_Trigger(CInputJoypad::LSTICK_UP, 0) == true)
+			pInputJoypad->GetTrigger(CInputJoypad::BUTTON_LEFT, 0) == true ||
+			pInputJoypad->Get_LStick_Trigger(CInputJoypad::LSTICK_LEFT, 0) == true)
 		{
 			CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_SELECT_PUSH);
 			m_PauseSelect--;
@@ -216,8 +216,8 @@ void CPause::Update(void)
 		}
 
 		if (pInputKeyboard->GetTrigger(DIK_D) == true ||
-			pInputJoypad->GetTrigger(CInputJoypad::BUTTON_DOWN, 0) == true ||
-			pInputJoypad->Get_LStick_Trigger(CInputJoypad::LSTICK_DOWN, 0) == true)
+			pInputJoypad->GetTrigger(CInputJoypad::BUTTON_RIGHT, 0) == true ||
+			pInputJoypad->Get_LStick_Trigger(CInputJoypad::LSTICK_RIGHT, 0) == true)
 		{
 			CManager::GetInstance()->GetSound()->PlaySoundA(CSound::SOUND_LABEL_SE_SELECT_PUSH);
 			m_PauseSelect++;
@@ -251,14 +251,9 @@ void CPause::Update(void)
 			case 0:
 				break;
 			case 1:
-				CManager::GetInstance()->SetTutorialStart(false);
 				CFade::SetFade(CScene::MODE_GAME);
 				break;
 			case 2:
-				CManager::GetInstance()->SetTutorialStart(true);
-				CFade::SetFade(CScene::MODE_GAME);
-				break;
-			case 3:
 				CFade::SetFade(CScene::MODE_TITLE);
 				break;
 			default:

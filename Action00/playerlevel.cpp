@@ -379,7 +379,7 @@ void CPlayerLevel::Move(void)
 		//空中だと背中方向への移動が遅くなる
 		if (m_nJump <= 1 && m_bRight == true)
 		{
-			m_move.x -= PLAYER_SPEED * 0.5f;
+			m_move.x -= PLAYER_SPEED;
 		}
 		else
 		{
@@ -398,7 +398,7 @@ void CPlayerLevel::Move(void)
 		//空中だと背中方向への移動が遅くなる
 		if (m_nJump <= 1 && m_bRight == false)
 		{
-			m_move.x += PLAYER_SPEED * 0.5f;
+			m_move.x += PLAYER_SPEED;
 		}
 		else
 		{
@@ -417,6 +417,7 @@ void CPlayerLevel::Move(void)
 		pInputJoypad->GetPress(CInputJoypad::BUTTON_RIGHT, 0) == false)
 	{//移動ボタンの入力がない場合のみスティックでの移動を受け付ける
 		m_move.x += pInputJoypad->Get_Stick_Left(0).x * PLAYER_SPEED;
+		WallMoveManager();
 	}
 }
 
